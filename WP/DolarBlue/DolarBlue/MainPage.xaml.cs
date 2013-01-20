@@ -55,12 +55,12 @@ namespace DolarBlue
         {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
+                ConnectionError.Visibility = Visibility.Collapsed;
                 progress.Text = "Buscando cotizaciones";
                 SystemTray.SetIsVisible(this, true);
                 SystemTray.SetProgressIndicator(this, progress);
 
                 HttpWebRequest httpReq = (HttpWebRequest) HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa"));
-                httpReq.Method = "POST";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
             }
             else
@@ -92,7 +92,7 @@ namespace DolarBlue
         private void UpdateWebBrowser(DivisaModel l)
         {
             DivisaModel model = l;
-            var result = new ObservableCollection<ItemViewModel>();
+            var result = new Collection<ItemViewModel>();
             
             foreach (var divisaViewModel in model.Divisas)
             {
@@ -120,6 +120,7 @@ namespace DolarBlue
         private void ShowErrorConnection()
         {
             //Luego le aviso al usuario que no se pudo cargar nueva información.
+            ConnectionError.Visibility = Visibility.Visible;
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo.");
@@ -127,5 +128,10 @@ namespace DolarBlue
         }
 
         #endregion
+
+        private void ButtonGo_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
     }
 }

@@ -64,8 +64,9 @@ namespace DolarBlue
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.
         /// </summary>
-        public void LoadData(ObservableCollection<ItemViewModel> items)
+        public void LoadData(Collection<ItemViewModel> items)
         {
+            this.Items.Clear();
             foreach (var itemViewModel in items)
             {
                 this.Items.Add(itemViewModel);
