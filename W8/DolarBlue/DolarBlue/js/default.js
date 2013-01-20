@@ -29,6 +29,11 @@
         // asynchronous operation before your application is suspended, call
         // args.setPromise().
     };
+	
+    app.onsettings = function (e) {
+    	e.detail.applicationcommands = { "about": { title: "Acerca de", href: "/pages/about.html" } };
+    	WinJS.UI.SettingsFlyout.populateSettings(e);
+    };
 
     app.start();
 })();
