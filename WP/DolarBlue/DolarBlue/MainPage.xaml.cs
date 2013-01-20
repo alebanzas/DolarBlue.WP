@@ -81,8 +81,12 @@ namespace DolarBlue
                 result.Add(new ItemViewModel()
                 {
                     LineOne = divisaViewModel.Nombre,
-                    LineTwo = divisaViewModel.ValorCompra,
-                    LineThree = "Facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis senectus sociosqu",
+                    LineTwo = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    LineThree = string.Format("compra $ {0} | venta $ {1}",
+                                                            divisaViewModel.ValorCompra,
+                                                            divisaViewModel.ValorVenta),
+                    LineFour = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    LineFive = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
 
                 });
             }

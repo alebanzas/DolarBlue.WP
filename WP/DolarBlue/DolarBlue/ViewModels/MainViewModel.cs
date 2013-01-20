@@ -66,9 +66,6 @@ namespace DolarBlue
         /// </summary>
         public void LoadData(ObservableCollection<ItemViewModel> items)
         {
-            this.Items.Add(new ItemViewModel() { LineOne = "dolar", LineTwo = "linea 2", LineThree = "prueba" });
-            this.Items.Add(new ItemViewModel() { LineOne = "dolar", LineTwo = "linea 2", LineThree = "prueba" });
-
             foreach (var itemViewModel in items)
             {
                 this.Items.Add(itemViewModel);
