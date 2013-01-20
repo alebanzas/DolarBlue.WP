@@ -61,6 +61,7 @@ namespace DolarBlue
                 SystemTray.SetProgressIndicator(this, progress);
 
                 HttpWebRequest httpReq = (HttpWebRequest) HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa"));
+                httpReq.Method = "POST";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
             }
             else
