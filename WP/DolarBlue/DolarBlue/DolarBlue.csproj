@@ -90,6 +90,7 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DolarBlue_2013_01_20_20_21_23.sap" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
