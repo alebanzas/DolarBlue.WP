@@ -9,19 +9,25 @@
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
-	<script src="/js/data.js"></script>
-	<script src="/js/utils.js"></script>
-
 	<link href="/pages/home/home.css" rel="stylesheet" />
 	<script src="/pages/home/home.js"></script>
 </head>
 <body>
 	<div class="itemtemplate" data-win-control="WinJS.Binding.Template">
 		<div class="moneda">
-			<h2 data-win-bind="textCotent: Nombre"></h2>			
 			<div class="cotizacion">
-				<h6>Compra: </h6><h6 class="compra" data-win-bind="textContent: ValorCompra"></h6>
-				<h3>Venta: </h3><h3 class="venta" data-win-bind="textContent: ValorVenta"></h3>
+				<hgroup>
+					<h2 data-win-bind="textContent: Nombre"></h2>	
+					<h3>$ <span data-win-bind="textContent: ValorVenta"></span></h3>
+				</hgroup>
+			</div>
+			<div class="compraventa">
+				<hgroup>
+					<h4 class="compra">Compra: <span data-win-bind="textContent: ValorCompra"></span></h4> |
+					<h4 class="venta">Venta: <span data-win-bind="textContent: ValorVenta"></span></h4>
+				</hgroup>
+				<span>Variación: </span><span data-win-bind="textContent: Variacion"></span>
+				<span>Última actualización: </span><span data-win-bind="textContent: Actualizacion"></span>
 			</div>
 		</div>
 	</div>
