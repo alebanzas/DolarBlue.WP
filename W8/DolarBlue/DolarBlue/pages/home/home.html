@@ -9,20 +9,33 @@
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
-    <link href="/pages/home/home.css" rel="stylesheet" />
-    <script src="/pages/home/home.js"></script>
+	<script src="/js/data.js"></script>
+	<script src="/js/utils.js"></script>
+
+	<link href="/pages/home/home.css" rel="stylesheet" />
+	<script src="/pages/home/home.js"></script>
 </head>
 <body>
-    <div class="home fragment">
-        <header aria-label="Header content" role="banner">
-            <button class="win-backbutton" aria-label="Back" disabled type="button"></button>
-            <h1 class="titlearea win-type-ellipsis">
-                <span class="pagetitle">Cotización Dólar Blue</span>
-            </h1>
-        </header>
-        <section aria-label="Main content" role="main">
-            <p>Content goes here.</p>
-        </section>
-    </div>
+	<div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+		<div class="moneda">
+			<h2 data-win-bind="textCotent: Nombre"></h2>			
+			<div class="cotizacion">
+				<h6>Compra: </h6><h6 class="compra" data-win-bind="textContent: ValorCompra"></h6>
+				<h3>Venta: </h3><h3 class="venta" data-win-bind="textContent: ValorVenta"></h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="home fragment">
+		<header aria-label="Encabezado" role="banner">
+			<button class="win-backbutton" aria-label="Atrás" disabled type="button"></button>
+			<h1 class="titlearea win-type-ellipsis">
+				<span class="pagetitle">Cotización Dólar Blue</span>
+			</h1>
+		</header>
+		<section aria-label="Contenido principal" role="main">
+			<div class="cotizacioneslist win-selectionstylefilled" aria-label="Lista de cotizaciones" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+		</section>
+	</div>
 </body>
 </html>

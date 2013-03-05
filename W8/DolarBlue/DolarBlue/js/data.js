@@ -1,25 +1,36 @@
 ﻿(function () {
 	"use strict";
 	
-	function getExchangeRate() {
-		if (isInternetAvailable()) {
-			var pr = document.createElement("progress");
-			var header = document.querySelector("header h1");
-			header.appendChild(pr);
-			
-		} else {
-			showConnectionError();
+	var divisas = new WinJS.Binding.List();
+	
+	function getExchangeRates(progressCallback, endCallback) {
+		if (progressCallback) {
+			progressCallback();
 		}
+			
+		return WinJS.xhr({ url: 'http://servicio.abhosting.com.ar/divisa', type: 'post' }).then(function (xhr) {
+			var result = JSON.parse(xhr.responseText);
+			if (result && result.Divisas) {
+				result.Divisas.forEach(function (divisa) {
+					// items.Divisas.Nombre
+					// items.Divisas.ValorCompra
+					// items.Divisas.ValorVenta
+					// items.Divisas.Variacion
+					// items.Divisas.Simbolo
+					// items.Divisas.Actualizacion
+					divisas.push(divisa);
+				});
+			}
+		}).then(function() {
+			if (endCallback) {
+				endCallback();
+			}
+		});			
 	}
 
-	function isInternetAvailable() {
-		var internetProfile = Windows.Networking.Connectivity.NetworkInformation.getInternetConnectionProfile();
-		return internetProfile != null && internetProfile.getNetworkConnectivityLevel() == Windows.Networking.Connectivity.NetworkConnectivityLevel.internetAccess;
-	}
-	
-	function showConnectionError() {
-		var popup = Windows.UI.Popups.MessageDialog("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a abrir la aplicación.", "Sin conexión");
-		popup.showAsync();
-	}
+	WinJS.Namespace.define("Data", {
+		getExchangeRatesFromService: getExchangeRates,
+		exchangeRates: divisas
+	});
 
 })();
