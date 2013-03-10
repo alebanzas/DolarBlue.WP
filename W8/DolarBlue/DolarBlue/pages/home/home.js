@@ -3,18 +3,21 @@
 (function () {
     "use strict";
 
+	var appView = Windows.UI.ViewManagement.ApplicationView;
+	var appViewState = Windows.UI.ViewManagement.ApplicationViewState;
+	var ui = WinJS.UI;
+	
     WinJS.UI.Pages.define("/pages/home/home.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
-        ready: function (element, options) {
+    	ready: function (element, options) {
+    		var that = this;
 	        if (Utils.isInternetAvailable()) {
 	        	Data.getExchangeRatesFromService(this.startProgress, this.endProgress).then(function() {
 	        		var listView = element.querySelector(".cotizacioneslist").winControl;
 	        		var itemTemplate = element.querySelector(".itemtemplate");
 
-	        		listView.itemDataSource = Data.exchangeRates.dataSource;
-	        		listView.groupDataSource = null;
-	        		listView.itemTemplate = itemTemplate;
+	        		that._initializeLayout(listView, appView.value, itemTemplate);
 	        	});
 
 	        } else {
@@ -29,7 +32,22 @@
         updateLayout: function (element, viewState, lastViewState) {
             /// <param name="element" domElement="true" />
 
-            // TODO: Respond to changes in viewState.
+        	var listView = element.querySelector(".cotizacioneslist").winControl;
+
+            var itemTemplate = element.querySelector(".itemtemplate");
+
+            if (lastViewState !== viewState) {
+                if (lastViewState === appViewState.snapped || viewState === appViewState.snapped) {
+                    var handler = function (e) {
+                        listView.removeEventListener("contentanimating", handler, false);
+                        e.preventDefault();
+                    };
+
+                    listView.addEventListener("contentanimating", handler, false);
+                    this._initializeLayout(listView, viewState, itemTemplate);
+                }
+
+            }
         },
         
         startProgress: function() {
@@ -42,5 +60,21 @@
         	var progress = document.querySelector("header h1 progress");
         	progress.style.display = "none";
         },
+        
+    	// This function updates the ListView with new layouts
+        _initializeLayout: function (listView, viewState, itemTemplate) {
+        	/// <param name="listView" value="WinJS.UI.ListView.prototype" />
+
+        	listView.itemDataSource = Data.exchangeRates.dataSource;
+        	listView.groupDataSource = null;
+        	listView.itemTemplate = itemTemplate;
+
+        	if (viewState === appViewState.snapped) {
+        		listView.layout = new ui.ListLayout();
+        	} else {
+        		listView.layout = new ui.GridLayout();
+        	}
+        }
+
     });
 })();
