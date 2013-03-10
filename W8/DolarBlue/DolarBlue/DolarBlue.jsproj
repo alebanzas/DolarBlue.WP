@@ -47,13 +47,15 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>DolarBlue_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>DolarBlue_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>C159B9753353B93F13F8DAACAE89F3E4141164EF</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="default.html" />
+    <None Include="DolarBlue_StoreKey.pfx" />
     <Content Include="images\100-dollar-bills.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
@@ -64,6 +66,7 @@
     <Content Include="css\default.css" />
     <Content Include="js\navigator.js" />
     <Content Include="js\utils.js" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="pages\about.html" />
     <Content Include="pages\home\home.css" />
     <Content Include="pages\home\home.html" />
