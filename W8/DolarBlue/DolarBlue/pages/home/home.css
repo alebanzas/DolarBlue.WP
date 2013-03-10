@@ -1,18 +1,19 @@
-﻿.home section[role=main] {
-    margin-left: 120px;
-    margin-right: 120px;
+﻿.home .win-listview .win-surface {
+	margin-left: 120px;
+	margin-right: 40px;
 }
 
 .home .cotizacioneslist {
-	height: calc(100% - 60px);
+	height: 100%;
 }
 
 	.home .cotizacioneslist .win-container {
 		margin-right: 80px;
+		margin-bottom: 80px;
 	}
 
 .home .moneda {
-	height: 580px;
+	height: 480px;
 	width: 400px;
 	display: -ms-grid;
 	-ms-grid-rows: 3fr 2fr;
@@ -86,16 +87,16 @@
 			font-size: 11pt;
 		}
 
+@media screen and (-ms-view-state: fullscreen-portrait) {
+	.home .win-listview .win-surface {
+		margin-left: 100px;
+		margin-right: 20px;
+	}
+}
+
 @media screen and (-ms-view-state: snapped) {
     .home section[role=main] {
         margin-left: 20px;
         margin-right: 20px;
-    }
-}
-
-@media screen and (-ms-view-state: fullscreen-portrait) {
-    .home section[role=main] {
-        margin-left: 100px;
-        margin-right: 100px;
     }
 }
