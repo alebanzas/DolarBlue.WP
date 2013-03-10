@@ -1,7 +1,7 @@
 ﻿body {
 	height: 100%;
 	width: 100%;
-	color: #319331;
+	color: #246824;
 	background-image: url("/images/100-dollar-bills.jpg");
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -13,7 +13,7 @@
 }
 
 progress:indeterminate {
-	color: #319331;
+	color: #246824;
 }
 
 .fragment {
