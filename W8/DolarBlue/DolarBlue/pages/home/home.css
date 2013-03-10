@@ -10,6 +10,12 @@
 	.home .cotizacioneslist .win-container {
 		margin-right: 80px;
 		margin-bottom: 80px;
+		background-color: transparent;
+	}
+
+	.home .cotizacioneslist .win-container:hover {
+		background-color: transparent;
+		outline-color: transparent;
 	}
 
 .home .moneda {
@@ -95,8 +101,48 @@
 }
 
 @media screen and (-ms-view-state: snapped) {
-    .home section[role=main] {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
+	.home .win-listview .win-surface {
+		margin-left: 20px;
+		margin-right: 40px;
+	}
+
+	.home .moneda {
+		height: 200px;
+		width: 230px;
+	}
+
+	.home .cotizacioneslist .win-container {
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+
+	.home .moneda .cotizacion .nombre {
+		font-size: 20pt;
+	}
+
+	.home .moneda .cotizacion .valorventa {
+		font-size: 24pt;
+	}
+
+	.home .moneda .compraventa .compra {
+		font-family: 'Segoe UI Semibold';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .venta {
+		text-align: right;
+		font-family: 'Segoe UI Semibold';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .variacion {
+		font-family: 'Segoe UI';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .actualizacion {
+		font-family: 'Segoe UI';
+		font-size: 9pt;
+	}
+
 }
