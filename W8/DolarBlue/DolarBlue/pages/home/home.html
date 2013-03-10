@@ -5,10 +5,11 @@
     <title>home</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
+	<link href="/css/default.css" rel="stylesheet"/>
 	<link href="/pages/home/home.css" rel="stylesheet" />
 	<script src="/pages/home/home.js"></script>
 </head>
@@ -16,18 +17,14 @@
 	<div class="itemtemplate" data-win-control="WinJS.Binding.Template">
 		<div class="moneda">
 			<div class="cotizacion">
-				<hgroup>
-					<h2 data-win-bind="textContent: Nombre"></h2>	
-					<h3>$ <span data-win-bind="textContent: ValorVenta"></span></h3>
-				</hgroup>
+				<h2 class="nombre" data-win-bind="textContent: Nombre"></h2>	
+				<h3 class="valorventa">$ <span data-win-bind="textContent: ValorVenta"></span></h3>
 			</div>
 			<div class="compraventa">
-				<hgroup>
-					<h4 class="compra">Compra: <span data-win-bind="textContent: ValorCompra"></span></h4>
-					<h4 class="venta">Venta: <span data-win-bind="textContent: ValorVenta"></span></h4>
-				</hgroup>
-				<span>Variación: </span><span data-win-bind="textContent: Variacion"></span>
-				<span>Última actualización: </span><span data-win-bind="textContent: Actualizacion"></span>
+				<h4 class="compra">Compra: $ <span data-win-bind="textContent: ValorCompra"></span></h4>
+				<h4 class="venta">Venta: $ <span data-win-bind="textContent: ValorVenta"></span></h4>
+				<h4 class="variacion">Variación: <span data-win-bind="textContent: Variacion"></span></h4>
+				<h3 class="actualizacion">Última actualización: <span data-win-bind="textContent: Actualizacion"></span></h3>
 			</div>
 		</div>
 	</div>
@@ -40,7 +37,7 @@
 			</h1>
 		</header>
 		<section aria-label="Contenido principal" role="main">
-			<div class="cotizacioneslist win-selectionstylefilled" aria-label="Lista de cotizaciones" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none' }"></div>
+			<div class="cotizacioneslist win-selectionstylefilled" aria-label="Lista de cotizaciones" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none', tapBehavior: 'none' }"></div>
 		</section>
 	</div>
 </body>

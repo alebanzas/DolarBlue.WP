@@ -8,16 +8,16 @@
 			progressCallback();
 		}
 			
-		return WinJS.xhr({ url: 'http://servicio.abhosting.com.ar/divisa', type: 'post' }).then(function (xhr) {
+		return WinJS.xhr({ url: 'http://servicio.abhosting.com.ar/divisa' }).then(function (xhr) {
 			var result = JSON.parse(xhr.responseText);
 			if (result && result.Divisas) {
+				// result.Divisas.Nombre
+				// result.Divisas.ValorCompra
+				// result.Divisas.ValorVenta
+				// result.Divisas.Variacion
+				// result.Divisas.Simbolo
+				// result.Divisas.Actualizacion
 				result.Divisas.forEach(function (divisa) {
-					// items.Divisas.Nombre
-					// items.Divisas.ValorCompra
-					// items.Divisas.ValorVenta
-					// items.Divisas.Variacion
-					// items.Divisas.Simbolo
-					// items.Divisas.Actualizacion
 					divisas.push(divisa);
 				});
 			}
@@ -25,7 +25,7 @@
 			if (endCallback) {
 				endCallback();
 			}
-		});			
+		});
 	}
 
 	WinJS.Namespace.define("Data", {
