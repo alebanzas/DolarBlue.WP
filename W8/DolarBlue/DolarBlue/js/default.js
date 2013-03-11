@@ -10,7 +10,10 @@
     var nav = WinJS.Navigation;
 
     app.onactivated = function (args) {
-        if (args.detail.kind === activation.ActivationKind.launch) {
+    	if (args.detail.kind === activation.ActivationKind.launch) {
+
+    		document.getElementById("refresh").onclick = refreshContent;
+
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
@@ -48,6 +51,34 @@
     	e.detail.applicationcommands = { "about": { title: "Acerca de", href: "/pages/about.html" } };
     	WinJS.UI.SettingsFlyout.populateSettings(e);
     };
+
+    function refreshContent() {
+    	var appbar = document.getElementById("appbar");
+
+	    if (Data.exchangeRates && Data.exchangeRates.length != 0) {
+		    Data.exchangeRates.length = 0;
+	    }
+
+    	Data.getExchangeRatesFromService(startProgress, endProgress);
+    	appbar.winControl.hide();
+    }
+	
+    function startProgress() {
+    	var pr = document.querySelector("header h1 progress");
+	    if (!pr) {
+		    pr = document.createElement("progress");
+		    var header = document.querySelector("header h1");
+		    header.appendChild(pr);
+	    } else {
+		    pr.style.display = "block";
+	    }
+
+    }
+        
+    function endProgress() {
+		var progress = document.querySelector("header h1 progress");
+		progress.style.display = "none";
+	}
 
     app.start();
 })();

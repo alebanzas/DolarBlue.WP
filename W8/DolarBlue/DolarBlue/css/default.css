@@ -1,7 +1,6 @@
 ﻿body {
 	height: 100%;
 	width: 100%;
-	color: #246824;
 	background-image: url("/images/100-dollar-bills.jpg");
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -10,6 +9,7 @@
 #contenthost {
     height: 100%;
     width: 100%;
+	color: #246824;
 }
 
 progress:indeterminate {
@@ -52,6 +52,48 @@ progress:indeterminate {
         height: 100%;
         width: 100%;
     }
+
+.win-appbar {
+	background-color: #246824;
+}
+
+	.win-appbar .win-command {
+		color: #fff;
+	}
+
+	.win-appbar button:active .win-command,
+	.win-appbar button:-ms-keyboard-active .win-command {
+		color: #fff;
+	}
+
+	.win-appbar .win-label {
+		color: #fff;
+	}
+
+	.win-appbar .win-commandimage {
+		color: #fff;
+	}
+
+	.win-appbar button:active .win-commandimage,
+	.win-appbar button:-ms-keyboard-active .win-commandimage {
+		color: #246824;
+	}
+
+	.win-appbar .win-commandring {
+		border-color: #fff;
+	}
+
+	.win-appbar button:hover .win-commandring {
+		background-color: rgba(255, 255, 255, 0.13);
+		border-color: #fff;
+	}
+
+	.win-appbar button:active .win-commandring,
+	.win-appbar button:-ms-keyboard-active .win-commandring {
+		background-color: #fff;
+		border-color: #fff;
+	}
+
 
 @media screen and (-ms-view-state: snapped) {
     .fragment header[role=banner] {
