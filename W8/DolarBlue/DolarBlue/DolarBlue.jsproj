@@ -46,7 +46,7 @@
   <PropertyGroup>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>es-AR</DefaultLanguage>
     <PackageCertificateKeyFile>DolarBlue_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>C159B9753353B93F13F8DAACAE89F3E4141164EF</PackageCertificateThumbprint>
   </PropertyGroup>

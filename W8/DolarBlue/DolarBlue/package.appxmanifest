@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Dolar Blue" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="DolarBlue" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Dolar Blue" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Consultá la cotización del dólar oficial y paralelo en un solo lugar." ForegroundText="light" BackgroundColor="#246824">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+        <SplashScreen Image="images\splashscreen.png" BackgroundColor="#246824" />
       </VisualElements>
     </Application>
   </Applications>
