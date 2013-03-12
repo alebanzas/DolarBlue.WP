@@ -86,11 +86,17 @@
     	var request = e.request;
     	request.data.properties.title = "Cotización Dólar Blue";
     	request.data.properties.description = "Obtené la cotización actualizada a cada momento.";
-    	var datos = "";
-    	Data.exchangeRates.forEach(function(divisa) {
+
+    	var datos = "Cotización actual: ";
+    	var html = "<h2>Cotización del dólar oficial y Blue</h2>";
+    	Data.exchangeRates.forEach(function (divisa) {
     		datos = datos + divisa.Nombre + ": $" + divisa.ValorVenta + ". ";
+    		html = html + "<p><span>" + divisa.Nombre + ": </span><span><strong>$" + divisa.ValorVenta + "</strong></span> <span>(Actualizado: " + divisa.Actualizacion + ")</span></p>";
     	});
-	    datos = datos + " #DolarBlue";
+	    var htmlFormat = Windows.ApplicationModel.DataTransfer.HtmlFormatHelper.createHtmlFormat(html);
+	    datos = datos + "#DolarBlue";
+
+	    request.data.setHtmlFormat(htmlFormat);
     	request.data.setText(datos);
 	}
 
