@@ -16,7 +16,9 @@
 
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
-                // your application here.
+            	// your application here.
+            	var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+            	dataTransferManager.addEventListener("datarequested", shareHandler);
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
@@ -78,6 +80,18 @@
     function endProgress() {
 		var progress = document.querySelector("header h1 progress");
 		progress.style.display = "none";
+    }
+
+    function shareHandler(e) {
+    	var request = e.request;
+    	request.data.properties.title = "Cotización Dólar Blue";
+    	request.data.properties.description = "Obtené la cotización actualizada a cada momento.";
+    	var datos = "";
+    	Data.exchangeRates.forEach(function(divisa) {
+    		datos = datos + divisa.Nombre + ": $" + divisa.ValorVenta + ". ";
+    	});
+	    datos = datos + " #DolarBlue";
+    	request.data.setText(datos);
 	}
 
     app.start();
