@@ -6,6 +6,7 @@
 	var appView = Windows.UI.ViewManagement.ApplicationView;
 	var appViewState = Windows.UI.ViewManagement.ApplicationViewState;
 	var ui = WinJS.UI;
+	var notifications = Windows.UI.Notifications;
 	
     WinJS.UI.Pages.define("/pages/home/home.html", {
         // This function is called whenever a user navigates to this page. It
@@ -23,6 +24,16 @@
 	        } else {
 				Utils.showConnectionError();
 	        }
+    		
+	        notifications.TileUpdateManager.createTileUpdaterForApplication().enableNotificationQueue(true);
+
+    		var urisToPoll = [
+    			new Windows.Foundation.Uri("http://servicio.abhosting.com.ar/divisa/oficial.xml"),
+    			new Windows.Foundation.Uri("http://servicio.abhosting.com.ar/divisa/blue.xml")
+    		];
+    		var recurrence = notifications.PeriodicUpdateRecurrence.hour;
+    		
+    		notifications.TileUpdateManager.createTileUpdaterForApplication().startPeriodicUpdateBatch(urisToPoll, recurrence);
         },
 
         unload: function () {
