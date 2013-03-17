@@ -1,26 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using DolarBlue.ViewModels;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
+using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace DolarBlue
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        ProgressIndicator progress = new ProgressIndicator();
+        readonly ProgressIndicator _progress = new ProgressIndicator();
         
         // Constructor
         public MainPage()
@@ -29,10 +21,10 @@ namespace DolarBlue
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
+            Loaded += MainPage_Loaded;
 
-            progress.IsVisible = true;
-            progress.IsIndeterminate = true;
+            _progress.IsVisible = true;
+            _progress.IsIndeterminate = true;
         }
 
         // Load data for the ViewModel Items
@@ -56,14 +48,21 @@ namespace DolarBlue
             if (NetworkInterface.GetIsNetworkAvailable())
             {
                 ConnectionError.Visibility = Visibility.Collapsed;
-                progress.Text = "Buscando cotizaciones";
+                _progress.Text = "Buscando cotizaciones";
                 SystemTray.SetIsVisible(this, true);
-                SystemTray.SetProgressIndicator(this, progress);
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+                SystemTray.SetProgressIndicator(this, _progress);
 
-                HttpWebRequest httpReq = (HttpWebRequest) HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa"));
-                httpReq.Method = "POST";
+                var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                if (applicationBarIconButton != null)
+                    applicationBarIconButton.IsEnabled = false;
+
+                var httpReq = (HttpWebRequest)WebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?version=2"));
+                httpReq.Method = "GET";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
+
+                var httpReq2 = (HttpWebRequest)WebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/message/?version=2"));
+                httpReq2.Method = "GET";
+                httpReq2.BeginGetResponse(HTTPWebRequestMessageCallBack, httpReq);
             }
             else
             {
@@ -82,25 +81,40 @@ namespace DolarBlue
                 var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
                 var o = (DivisaModel)serializer.ReadObject(stream);
 
-                this.Dispatcher.BeginInvoke(new DelegateUpdateWebBrowser(UpdateWebBrowser), o);
+                Dispatcher.BeginInvoke(new DelegateUpdateWebBrowser(UpdateCotizaciones), o);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 EndRequest();
                 //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                this.Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones. Verifique su conexión a internet."));
+                Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones. Verifique su conexión a internet."));
             }
         }
 
-        delegate void DelegateUpdateWebBrowser(DivisaModel local);
-        private void UpdateWebBrowser(DivisaModel l)
+        private void HTTPWebRequestMessageCallBack(IAsyncResult result)
         {
-            DivisaModel model = l;
+            try
+            {
+                var httpRequest = (HttpWebRequest)result.AsyncState;
+                var response = httpRequest.EndGetResponse(result);
+                var stream = response.GetResponseStream();
+
+                var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
+                var o = (MessageModel)serializer.ReadObject(stream);
+
+                Dispatcher.BeginInvoke(() => MessageBox.Show(o.Message));
+            }
+            catch {}
+        }
+
+        delegate void DelegateUpdateWebBrowser(DivisaModel local);
+        private void UpdateCotizaciones(DivisaModel model)
+        {
             var result = new Collection<ItemViewModel>();
             
             foreach (var divisaViewModel in model.Divisas)
             {
-                result.Add(new ItemViewModel()
+                result.Add(new ItemViewModel
                 {
                     Nombre = divisaViewModel.Nombre,
                     ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
@@ -118,7 +132,9 @@ namespace DolarBlue
 
         private void EndRequest()
         {
-            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+            var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            if (applicationBarIconButton != null)
+                applicationBarIconButton.IsEnabled = true;
             Loading.Visibility = Visibility.Collapsed;
             SystemTray.SetProgressIndicator(this, null);
         }
@@ -127,10 +143,7 @@ namespace DolarBlue
         {
             //Luego le aviso al usuario que no se pudo cargar nueva información.
             ConnectionError.Visibility = Visibility.Visible;
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo.");
-            });
+            Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo."));
         }
 
         #endregion
@@ -142,7 +155,7 @@ namespace DolarBlue
 
         private void Conversor_Click(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/Conversor.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Conversor.xaml", UriKind.Relative));
         }
     }
 }
