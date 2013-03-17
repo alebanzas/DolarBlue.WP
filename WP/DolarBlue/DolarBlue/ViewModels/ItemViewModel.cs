@@ -15,107 +15,107 @@ namespace DolarBlue
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
-        private string _lineOne;
+        private string _nombre;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
         /// </summary>
         /// <returns></returns>
-        public string LineOne
+        public string Nombre
         {
             get
             {
-                return _lineOne;
+                return _nombre;
             }
             set
             {
-                if (value != _lineOne)
+                if (value != _nombre)
                 {
-                    _lineOne = value;
-                    NotifyPropertyChanged("LineOne");
+                    _nombre = value;
+                    NotifyPropertyChanged("Nombre");
                 }
             }
         }
 
-        private string _lineTwo;
+        private string _valorVenta;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
         /// </summary>
         /// <returns></returns>
-        public string LineTwo
+        public string ValorVenta
         {
             get
             {
-                return _lineTwo;
+                return _valorVenta;
             }
             set
             {
-                if (value != _lineTwo)
+                if (value != _valorVenta)
                 {
-                    _lineTwo = value;
-                    NotifyPropertyChanged("LineTwo");
+                    _valorVenta = value;
+                    NotifyPropertyChanged("ValorVenta");
                 }
             }
         }
 
-        private string _lineThree;
+        private string _compraVenta;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
         /// </summary>
         /// <returns></returns>
-        public string LineThree
+        public string CompraVenta
         {
             get
             {
-                return _lineThree;
+                return _compraVenta;
             }
             set
             {
-                if (value != _lineThree)
+                if (value != _compraVenta)
                 {
-                    _lineThree = value;
-                    NotifyPropertyChanged("LineThree");
+                    _compraVenta = value;
+                    NotifyPropertyChanged("CompraVenta");
                 }
             }
         }
 
-        private string _lineFour;
+        private string _variacion;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
         /// </summary>
         /// <returns></returns>
-        public string LineFour
+        public string Variacion
         {
             get
             {
-                return _lineFour;
+                return _variacion;
             }
             set
             {
-                if (value != _lineFour)
+                if (value != _variacion)
                 {
-                    _lineFour = value;
-                    NotifyPropertyChanged("LineFour");
+                    _variacion = value;
+                    NotifyPropertyChanged("Variacion");
                 }
             }
         }
 
-        private string _lineFive;
+        private string _actualizacion;
         /// <summary>
         /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
         /// </summary>
         /// <returns></returns>
-        public string LineFive
+        public string Actualizacion
         {
             get
             {
-                return _lineFive;
+                return _actualizacion;
             }
             set
             {
-                if (value != _lineFive)
+                if (value != _actualizacion)
                 {
-                    _lineFive = value;
-                    NotifyPropertyChanged("LineFive");
+                    _actualizacion = value;
+                    NotifyPropertyChanged("Actualizacion");
                 }
             }
         }

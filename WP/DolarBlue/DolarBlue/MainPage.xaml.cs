@@ -101,13 +101,13 @@ namespace DolarBlue
             {
                 result.Add(new ItemViewModel()
                 {
-                    LineOne = divisaViewModel.Nombre,
-                    LineTwo = string.Format("$ {0}", divisaViewModel.ValorVenta),
-                    LineThree = string.Format("compra $ {0} | venta $ {1}",
+                    Nombre = divisaViewModel.Nombre,
+                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    CompraVenta = string.Format("compra $ {0} | venta $ {1}",
                                                             divisaViewModel.ValorCompra,
                                                             divisaViewModel.ValorVenta),
-                    LineFour = string.Format("variación: {0}", divisaViewModel.Variacion),
-                    LineFive = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
 
                 });
             }
