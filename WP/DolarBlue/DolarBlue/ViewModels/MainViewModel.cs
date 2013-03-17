@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace DolarBlue.ViewModels
 {
@@ -70,7 +71,7 @@ namespace DolarBlue.ViewModels
                 Items.Add(itemViewModel);
 
                 double venta;
-                if (!double.TryParse(itemViewModel.ValorVenta.Split(' ')[1], out venta)) continue;
+                if (!double.TryParse(itemViewModel.ValorVenta.Replace(',','.').Split(' ')[1], NumberStyles.Any, CultureInfo.InvariantCulture, out venta)) continue;
 
                 var divisa = new ConversionViewModel
                     {
