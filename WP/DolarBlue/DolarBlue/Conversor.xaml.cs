@@ -1,4 +1,9 @@
-﻿using Microsoft.Phone.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using DolarBlue.ViewModels;
+using Microsoft.Phone.Controls;
 
 namespace DolarBlue
 {
@@ -9,6 +14,21 @@ namespace DolarBlue
             InitializeComponent();
 
             DataContext = App.ViewModel;
+            
+            Origen.ItemsSource = App.ViewModel.TiposConversion;
+        }
+
+        private void Convertir_OnClick(object sender, RoutedEventArgs e)
+        {
+            double valorConvertir;
+            if (double.TryParse(ValorConvertir.Text, out valorConvertir))
+            {
+                App.ViewModel.SetValorConversion(valorConvertir, (ConversionViewModel)Origen.SelectedItem);
+            }
+            else
+            {
+                this.Dispatcher.BeginInvoke(() => MessageBox.Show("Ingrese un número."));
+            }
         }
     }
 }

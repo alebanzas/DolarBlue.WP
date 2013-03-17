@@ -87,7 +87,8 @@ namespace DolarBlue
             catch (Exception ex)
             {
                 EndRequest();
-                this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
+                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
+                this.Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones. Verifique su conexión a internet."));
             }
         }
 
@@ -108,7 +109,7 @@ namespace DolarBlue
                                                             divisaViewModel.ValorVenta),
                     Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
                     Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
-
+                    Simbolo = divisaViewModel.Simbolo,
                 });
             }
             App.ViewModel.LoadData(result);

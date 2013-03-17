@@ -1,25 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
-namespace DolarBlue
+namespace DolarBlue.ViewModels
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
         private string _nombre;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Nombre
         {
             get
@@ -36,11 +22,24 @@ namespace DolarBlue
             }
         }
 
+        private string _simbolo;
+        public string Simbolo
+        {
+            get
+            {
+                return _simbolo;
+            }
+            set
+            {
+                if (value != _simbolo)
+                {
+                    _simbolo = value;
+                    NotifyPropertyChanged("Simbolo");
+                }
+            }
+        }
+
         private string _valorVenta;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string ValorVenta
         {
             get
@@ -58,10 +57,6 @@ namespace DolarBlue
         }
 
         private string _compraVenta;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string CompraVenta
         {
             get
@@ -79,10 +74,6 @@ namespace DolarBlue
         }
 
         private string _variacion;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Variacion
         {
             get
@@ -100,10 +91,6 @@ namespace DolarBlue
         }
 
         private string _actualizacion;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Actualizacion
         {
             get

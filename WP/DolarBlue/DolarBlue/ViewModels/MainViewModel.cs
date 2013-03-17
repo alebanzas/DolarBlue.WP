@@ -1,32 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using DolarBlue.ViewModels;
-using Microsoft.Phone.Controls;
 
-
-namespace DolarBlue
+namespace DolarBlue.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
         public MainViewModel()
         {
-            this.Items = new ObservableCollection<ItemViewModel>();
+            Items = new ObservableCollection<ItemViewModel>();
+            TiposConversion = new ObservableCollection<ConversionViewModel>();
+            Conversiones = new ObservableCollection<ConversionViewModel>();
         }
 
         /// <summary>
@@ -34,22 +18,22 @@ namespace DolarBlue
         /// </summary>
         public ObservableCollection<ItemViewModel> Items { get; private set; }
 
-        private string _sampleProperty = "Sample Runtime Property Value";
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding
-        /// </summary>
-        /// <returns></returns>
-        public string SampleProperty
+        public ObservableCollection<ConversionViewModel> TiposConversion { get; private set; }
+
+        public ObservableCollection<ConversionViewModel> Conversiones { get; private set; }
+
+        private string _valorConvertir;
+        public string ValorConvertir
         {
             get
             {
-                return _sampleProperty;
+                return _valorConvertir;
             }
             set
             {
-                if (value != _sampleProperty)
+                if (value != _valorConvertir)
                 {
-                    _sampleProperty = value;
+                    _valorConvertir = value;
                     NotifyPropertyChanged("SampleProperty");
                 }
             }
@@ -66,12 +50,54 @@ namespace DolarBlue
         /// </summary>
         public void LoadData(Collection<ItemViewModel> items)
         {
-            this.Items.Clear();
+            Items.Clear();
+            TiposConversion.Clear();
+            Conversiones.Clear();
+
+            var peso = new ConversionViewModel
+                {
+                    Nombre = "Peso", 
+                    ValorVenta = 1, 
+                    ValorConvertido = 1, 
+                    Simbolo = "$",
+                    ValorConvertir = 1,
+                };
+            TiposConversion.Add(peso);
+            Conversiones.Add(peso);
+
             foreach (var itemViewModel in items)
             {
-                this.Items.Add(itemViewModel);
+                Items.Add(itemViewModel);
+
+                double venta;
+                if (!double.TryParse(itemViewModel.ValorVenta.Split(' ')[1], out venta)) continue;
+
+                var divisa = new ConversionViewModel
+                    {
+                        Nombre = itemViewModel.Nombre, 
+                        ValorVenta = venta, 
+                        ValorConvertido = venta, 
+                        Simbolo = itemViewModel.Simbolo,
+                        ValorConvertir = peso.ValorConvertir,
+                    };
+                TiposConversion.Add(divisa);
+                divisa = divisa.DeepClone(peso.Simbolo);
+                Conversiones.Add(divisa);
             }
-            this.IsDataLoaded = true;
+            IsDataLoaded = true;
+        }
+
+        /// <summary>
+        /// Calcula el nuevo valor convertido de cada divisa
+        /// </summary>
+        public void SetValorConversion(double valorConversion, ConversionViewModel valorOrigen)
+        {
+            foreach (var conversion in Conversiones)
+            {
+                conversion.ValorConvertido = valorConversion*conversion.ValorVenta / valorOrigen.ValorVenta;
+                conversion.Simbolo = valorOrigen.Simbolo;
+                conversion.ValorConvertir = valorConversion;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
