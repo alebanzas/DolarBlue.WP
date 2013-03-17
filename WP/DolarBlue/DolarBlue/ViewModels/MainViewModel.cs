@@ -63,7 +63,7 @@ namespace DolarBlue.ViewModels
                     ValorConvertir = 1,
                 };
             TiposConversion.Add(peso);
-            Conversiones.Add(peso);
+            Conversiones.Add(peso.DeepClone());
 
             foreach (var itemViewModel in items)
             {
@@ -78,11 +78,10 @@ namespace DolarBlue.ViewModels
                         ValorVenta = venta, 
                         ValorConvertido = venta, 
                         Simbolo = itemViewModel.Simbolo,
-                        ValorConvertir = peso.ValorConvertir,
+                        ValorConvertir = 1,
                     };
                 TiposConversion.Add(divisa);
-                divisa = divisa.DeepClone(peso.Simbolo);
-                Conversiones.Add(divisa);
+                Conversiones.Add(divisa.DeepClone(peso.Simbolo));
             }
             IsDataLoaded = true;
         }
