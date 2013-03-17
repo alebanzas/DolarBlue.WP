@@ -76,7 +76,7 @@
 
             <shell:ApplicationBarIconButton Text="Actualizar" IconUri="/Resources/Icons/ApplicationBar/sync.png"  Click="ButtonGo_Click" />
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="¿Qué es SUBE?" Click="QueEsSUBE_Click"/>
+                <shell:ApplicationBarMenuItem Text="Conversor de moneda" Click="Conversor_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
