@@ -28,4 +28,5 @@ obj/
 _ReSharper*/
 [Bb]ld
 *.orig
+[Aa]pp[Pp]ackages
 Thumbs.db

@@ -46,25 +46,33 @@
   <PropertyGroup>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    
-    <PackageCertificateKeyFile>DolarBlue_TemporaryKey.pfx</PackageCertificateKeyFile>
-    
+    <DefaultLanguage>es-AR</DefaultLanguage>
+    <PackageCertificateKeyFile>DolarBlue_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>C159B9753353B93F13F8DAACAE89F3E4141164EF</PackageCertificateThumbprint>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="default.html" />
+    <None Include="DolarBlue_StoreKey.pfx" />
+    <Content Include="images\100-dollar-bills.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
+    <Content Include="js\data.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
-    
+    <Content Include="js\navigator.js" />
+    <Content Include="js\utils.js" />
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="pages\about.html" />
+    <Content Include="pages\home\home.css" />
+    <Content Include="pages\home\home.html" />
+    <Content Include="pages\home\home.js" />
     <None Include="DolarBlue_TemporaryKey.pfx" />
-    
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.WinJS.1.0, Version=1.0" />

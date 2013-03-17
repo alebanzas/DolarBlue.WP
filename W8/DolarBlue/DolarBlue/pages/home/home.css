@@ -1,0 +1,148 @@
+﻿.home .win-listview .win-surface {
+	margin-left: 120px;
+	margin-right: 40px;
+}
+
+.home .cotizacioneslist {
+	height: 100%;
+}
+
+	.home .cotizacioneslist .win-container {
+		margin-right: 80px;
+		margin-bottom: 80px;
+		background-color: transparent;
+	}
+
+	.home .cotizacioneslist .win-container:hover {
+		background-color: transparent;
+		outline-color: transparent;
+	}
+
+.home .moneda {
+	height: 480px;
+	width: 400px;
+	display: -ms-grid;
+	-ms-grid-rows: 3fr 2fr;
+	-ms-grid-columns: 1fr;
+	color: #fff;
+	background-color: #246824;
+	margin: 0;
+	padding: 20px;
+}
+
+	.home .moneda .cotizacion {
+		-ms-grid-row: 1;
+		-ms-grid-column: 1;
+		display: -ms-grid;
+		-ms-grid-rows: 2fr 3fr;
+		-ms-grid-columns: 1fr;
+	}
+
+		.home .moneda .cotizacion .nombre {
+			-ms-grid-row: 1;
+			-ms-grid-column: 1;
+			font-family: 'Segoe UI Light';
+			font-size: 42pt;
+		}
+
+		.home .moneda .cotizacion .valorventa {
+			-ms-grid-row: 2;
+			-ms-grid-column: 1;
+			font-family: 'Segoe UI Light';
+			font-size: 56pt;
+			text-align: right;
+		}
+
+	.home .moneda .compraventa {
+		-ms-grid-row: 2;
+		-ms-grid-column: 1;
+		display: -ms-grid;
+		-ms-grid-rows: 1fr 1fr 1fr;
+		-ms-grid-columns: 1fr 1fr;
+		
+	}
+
+		.home .moneda .compraventa .compra {
+			-ms-grid-row: 1;
+			-ms-grid-column: 1;
+			font-family: 'Segoe UI Light';
+			font-size: 20pt;
+		}
+
+		.home .moneda .compraventa .venta {
+			-ms-grid-row: 1;
+			-ms-grid-column: 2;
+			text-align: right;
+			font-family: 'Segoe UI Light';
+			font-size: 20pt;
+		}
+
+		.home .moneda .compraventa .variacion {
+			-ms-grid-row: 2;
+			-ms-grid-column: 1;
+			-ms-grid-column-span: 2;
+			font-family: 'Segoe UI Light';
+			font-size: 20pt;
+		}
+
+		.home .moneda .compraventa .actualizacion {
+			-ms-grid-row: 3;
+			-ms-grid-column: 1;
+			-ms-grid-column-span: 2;
+			font-family: 'Segoe UI Semilight';
+			font-size: 11pt;
+		}
+
+@media screen and (-ms-view-state: fullscreen-portrait) {
+	.home .win-listview .win-surface {
+		margin-left: 100px;
+		margin-right: 20px;
+	}
+}
+
+@media screen and (-ms-view-state: snapped) {
+	.home .win-listview .win-surface {
+		margin-left: 20px;
+		margin-right: 40px;
+	}
+
+	.home .moneda {
+		height: 200px;
+		width: 230px;
+	}
+
+	.home .cotizacioneslist .win-container {
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+
+	.home .moneda .cotizacion .nombre {
+		font-size: 20pt;
+	}
+
+	.home .moneda .cotizacion .valorventa {
+		font-size: 24pt;
+	}
+
+	.home .moneda .compraventa .compra {
+		font-family: 'Segoe UI Semibold';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .venta {
+		text-align: right;
+		font-family: 'Segoe UI Semibold';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .variacion {
+		font-family: 'Segoe UI';
+		font-size: 11pt;
+	}
+
+	.home .moneda .compraventa .actualizacion {
+		font-family: 'Segoe UI';
+		font-size: 9pt;
+	}
+
+}

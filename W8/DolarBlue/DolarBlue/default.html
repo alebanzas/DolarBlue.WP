@@ -5,15 +5,21 @@
     <title>DolarBlue</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
     <!-- DolarBlue references -->
     <link href="/css/default.css" rel="stylesheet" />
-    <script src="/js/default.js"></script>
+	<script src="/js/default.js"></script>
+	<script src="/js/data.js"></script>
+	<script src="/js/navigator.js"></script>
+	<script src="/js/utils.js"></script>
 </head>
 <body>
-    <p>Content goes here</p>
+	<div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/home/home.html'}"></div>
+	<div id="appbar" data-win-control="WinJS.UI.AppBar">
+        <button id="refresh" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'refresh', label:'Refrescar', icon:'refresh'}" type="button"></button>
+    </div>
 </body>
 </html>
