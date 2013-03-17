@@ -52,17 +52,20 @@ namespace DolarBlue
                 SystemTray.SetIsVisible(this, true);
                 SystemTray.SetProgressIndicator(this, _progress);
 
-                var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-                if (applicationBarIconButton != null)
-                    applicationBarIconButton.IsEnabled = false;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                    if (applicationBarIconButton != null)
+                        applicationBarIconButton.IsEnabled = false;
+                });
 
-                var httpReq = (HttpWebRequest)WebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?version=2"));
+                var httpReq = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?type=WP&version=2"));
                 httpReq.Method = "GET";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
-                var httpReq2 = (HttpWebRequest)WebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/message/?version=2"));
+                var httpReq2 = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/message/?type=WP&version=2"));
                 httpReq2.Method = "GET";
-                httpReq2.BeginGetResponse(HTTPWebRequestMessageCallBack, httpReq);
+                httpReq2.BeginGetResponse(HTTPWebRequestMessageCallBack, httpReq2);
             }
             else
             {
@@ -99,12 +102,15 @@ namespace DolarBlue
                 var response = httpRequest.EndGetResponse(result);
                 var stream = response.GetResponseStream();
 
-                var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
+                var serializer = new DataContractJsonSerializer(typeof(MessageModel));
                 var o = (MessageModel)serializer.ReadObject(stream);
+
+                if(string.IsNullOrWhiteSpace(o.Message)) return;
 
                 Dispatcher.BeginInvoke(() => MessageBox.Show(o.Message));
             }
-            catch {}
+            catch (Exception e)
+            {}
         }
 
         delegate void DelegateUpdateWebBrowser(DivisaModel local);
@@ -132,11 +138,15 @@ namespace DolarBlue
 
         private void EndRequest()
         {
-            var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            if (applicationBarIconButton != null)
-                applicationBarIconButton.IsEnabled = true;
-            Loading.Visibility = Visibility.Collapsed;
-            SystemTray.SetProgressIndicator(this, null);
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                    if (applicationBarIconButton != null)
+                        applicationBarIconButton.IsEnabled = true;
+
+                    Loading.Visibility = Visibility.Collapsed;
+                    SystemTray.SetProgressIndicator(this, null);
+                });
         }
 
         private void ShowErrorConnection()

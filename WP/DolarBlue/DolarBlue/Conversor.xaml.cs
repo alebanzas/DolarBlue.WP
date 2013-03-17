@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,7 +22,7 @@ namespace DolarBlue
         private void Convertir_OnClick(object sender, RoutedEventArgs e)
         {
             double valorConvertir;
-            if (double.TryParse(ValorConvertir.Text, out valorConvertir))
+            if (double.TryParse(ValorConvertir.Text.ToString(CultureInfo.InvariantCulture), NumberStyles.Any, CultureInfo.InvariantCulture, out valorConvertir))
             {
                 App.ViewModel.SetValorConversion(valorConvertir, (ConversionViewModel)Origen.SelectedItem);
             }
