@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTB.Utilities", "BTB.Utilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DolarBlue.BLL", "DolarBlue.BLL\DolarBlue.BLL.csproj", "{4EE0A2C7-2B17-4FF5-BF39-41994D2EA260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileUpdateWorker.Tests", "TileUpdateWorker.Tests\TileUpdateWorker.Tests.csproj", "{4267A232-34FD-46D7-B31A-31D76C802595}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileXmlGenerator.Tests", "TileUpdateWorker.Tests\TileXmlGenerator.Tests.csproj", "{4267A232-34FD-46D7-B31A-31D76C802595}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{40FDBB44-B5CD-4C1A-9AA9-4F05916DEDD6}"
 EndProject
