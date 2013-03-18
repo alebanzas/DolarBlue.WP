@@ -46,14 +46,6 @@ namespace TileUpdateWorker
 
 		private void GenerateAndSaveXmlFromDivisa(DivisaViewModel divisa)
 		{
-			//<tile>
-			//  <visual>
-			//	<binding template="TileSquareText02">
-			//	  <text id="1">Text Field 1</text>
-			//	  <text id="2">Text Field 2</text>
-			//	</binding>  
-			//  </visual>
-			//</tile>
 			var fileName = string.Format("{0}.xml", divisa.Nombre.ToUrl());
 			var blobStorageType = GBellmann.Azure.Storage.AzureAccount.DefaultAccount().CreateCloudBlobClient();
 			var container = blobStorageType.GetContainerReference("dolarblue");
@@ -73,8 +65,16 @@ namespace TileUpdateWorker
 			}
 		}
 
-		private void GenerateXmlFile(XmlWriter xw, DivisaViewModel divisa)
+		public void GenerateXmlFile(XmlWriter xw, DivisaViewModel divisa)
 		{
+			//<tile>
+			//  <visual>
+			//	<binding template="TileSquareText02">
+			//	  <text id="1">Text Field 1</text>
+			//	  <text id="2">Text Field 2</text>
+			//	</binding>  
+			//  </visual>
+			//</tile>
 			xw.WriteStartDocument();
 
 			xw.WriteStartElement("tile");
