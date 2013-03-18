@@ -63,53 +63,7 @@ namespace TileUpdateWorker
 				var wSettings = new XmlWriterSettings {Indent = true, Encoding = Encoding.GetEncoding("ISO-8859-1")};
 				var xw = XmlWriter.Create(destination, wSettings);
 
-				xw.WriteStartDocument();
-
-				xw.WriteStartElement("tile");
-				xw.WriteStartElement("visual");
-				xw.WriteStartElement("binding");
-				xw.WriteStartAttribute("template");
-				xw.WriteString("TileSquareText01");
-				xw.WriteEndAttribute();
-
-				xw.WriteStartElement("text");
-				xw.WriteStartAttribute("id");
-				xw.WriteString("1");
-				xw.WriteEndAttribute();
-				xw.WriteString(divisa.Nombre);
-				xw.WriteEndElement();
-
-				xw.WriteStartElement("text");
-				xw.WriteStartAttribute("id");
-				xw.WriteString("2");
-				xw.WriteEndAttribute();
-				xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
-				xw.WriteString(divisa.Nombre);
-				xw.WriteEndElement();
-
-				xw.WriteStartElement("text");
-				xw.WriteStartAttribute("id");
-				xw.WriteString("3");
-				xw.WriteEndAttribute();
-				xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
-				xw.WriteString(divisa.Nombre);
-				xw.WriteEndElement();
-
-				xw.WriteStartElement("text");
-				xw.WriteStartAttribute("id");
-				xw.WriteString("4");
-				xw.WriteEndAttribute();
-				xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
-				xw.WriteString(divisa.Nombre);
-				xw.WriteEndElement();
-
-
-				xw.WriteEndElement(); // binding
-				xw.WriteEndElement(); // visual
-				xw.WriteEndElement(); // tile
-
-				xw.WriteEndDocument();
-				xw.Flush();
+				GenerateXmlFile(xw, divisa);
 
 				destination.Seek(0, SeekOrigin.Begin);
 				var destBlobReference = container.GetBlobReference(string.Format("{0}.xml", fileName));
@@ -117,6 +71,57 @@ namespace TileUpdateWorker
 				destBlobReference.Properties.ContentEncoding = "ISO-8859-1";
 				destBlobReference.UploadFromStream(destination);
 			}
+		}
+
+		private void GenerateXmlFile(XmlWriter xw, DivisaViewModel divisa)
+		{
+			xw.WriteStartDocument();
+
+			xw.WriteStartElement("tile");
+			xw.WriteStartElement("visual");
+			xw.WriteStartElement("binding");
+			xw.WriteStartAttribute("template");
+			xw.WriteString("TileSquareText01");
+			xw.WriteEndAttribute();
+
+			xw.WriteStartElement("text");
+			xw.WriteStartAttribute("id");
+			xw.WriteString("1");
+			xw.WriteEndAttribute();
+			xw.WriteString(divisa.Nombre);
+			xw.WriteEndElement();
+
+			xw.WriteStartElement("text");
+			xw.WriteStartAttribute("id");
+			xw.WriteString("2");
+			xw.WriteEndAttribute();
+			xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
+			xw.WriteString(divisa.Nombre);
+			xw.WriteEndElement();
+
+			xw.WriteStartElement("text");
+			xw.WriteStartAttribute("id");
+			xw.WriteString("3");
+			xw.WriteEndAttribute();
+			xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
+			xw.WriteString(divisa.Nombre);
+			xw.WriteEndElement();
+
+			xw.WriteStartElement("text");
+			xw.WriteStartAttribute("id");
+			xw.WriteString("4");
+			xw.WriteEndAttribute();
+			xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
+			xw.WriteString(divisa.Nombre);
+			xw.WriteEndElement();
+
+
+			xw.WriteEndElement(); // binding
+			xw.WriteEndElement(); // visual
+			xw.WriteEndElement(); // tile
+
+			xw.WriteEndDocument();
+			xw.Flush();
 		}
 
 		private T SendRequestGetResponse<T>(Uri urlToSearch, Func<T> executeForNullOrError) where T : class
