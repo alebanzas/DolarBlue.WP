@@ -19,7 +19,7 @@ namespace TileUpdateWorker
 			while (true)
 			{
 				var divisas = SendRequestGetResponse<DivisaModel>(new Uri("http://servicio.abhosting.com.ar/divisa"), () => new DivisaModel());
-				CreateXmlFile(divisas);
+				CreateXmlFiles(divisas);
 				Thread.Sleep(900000);
 			}
 		}
@@ -35,7 +35,7 @@ namespace TileUpdateWorker
 			return base.OnStart();
 		}
 
-		private void CreateXmlFile(DivisaModel divisas)
+		private void CreateXmlFiles(DivisaModel divisas)
 		{
 			//<tile>
 			//  <visual>
