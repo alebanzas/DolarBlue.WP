@@ -38,6 +38,14 @@ namespace TileUpdateWorker
 
 		private void CreateXmlFiles(DivisaModel divisas)
 		{
+			foreach (var divisa in divisas.Divisas)
+			{
+				GenerateAndSaveXmlFromDivisa(divisa);
+			}
+		}
+
+		private void GenerateAndSaveXmlFromDivisa(DivisaViewModel divisa)
+		{
 			//<tile>
 			//  <visual>
 			//	<binding template="TileSquareText02">
@@ -46,71 +54,68 @@ namespace TileUpdateWorker
 			//	</binding>  
 			//  </visual>
 			//</tile>
-			foreach (var divisa in divisas.Divisas)
+			var fileName = string.Format("{0}.xml", divisa.Nombre.ToUrl());
+			var blobStorageType = GBellmann.Azure.Storage.AzureAccount.DefaultAccount().CreateCloudBlobClient();
+			var container = blobStorageType.GetContainerReference("dolarblue");
+
+			using (var destination = new MemoryStream())
 			{
-				var fileName = string.Format("{0}.xml", divisa.Nombre.ToUrl());
-				var blobStorageType = GBellmann.Azure.Storage.AzureAccount.DefaultAccount().CreateCloudBlobClient();
-				var container = blobStorageType.GetContainerReference("dolarblue");
+				var wSettings = new XmlWriterSettings {Indent = true, Encoding = Encoding.GetEncoding("ISO-8859-1")};
+				var xw = XmlWriter.Create(destination, wSettings);
 
-				using (var destination = new MemoryStream())
-				{
-					var wSettings = new XmlWriterSettings {Indent = true, Encoding = Encoding.GetEncoding("ISO-8859-1")};
-					var xw = XmlWriter.Create(destination, wSettings);
+				xw.WriteStartDocument();
 
-					xw.WriteStartDocument();
+				xw.WriteStartElement("tile");
+				xw.WriteStartElement("visual");
+				xw.WriteStartElement("binding");
+				xw.WriteStartAttribute("template");
+				xw.WriteString("TileSquareText01");
+				xw.WriteEndAttribute();
 
-					xw.WriteStartElement("tile");
-					xw.WriteStartElement("visual");
-					xw.WriteStartElement("binding");
-					xw.WriteStartAttribute("template");
-					xw.WriteString("TileSquareText01");
-					xw.WriteEndAttribute();
+				xw.WriteStartElement("text");
+				xw.WriteStartAttribute("id");
+				xw.WriteString("1");
+				xw.WriteEndAttribute();
+				xw.WriteString(divisa.Nombre);
+				xw.WriteEndElement();
 
-					xw.WriteStartElement("text");
-					xw.WriteStartAttribute("id");
-					xw.WriteString("1");
-					xw.WriteEndAttribute();
-					xw.WriteString(divisa.Nombre);
-					xw.WriteEndElement();
+				xw.WriteStartElement("text");
+				xw.WriteStartAttribute("id");
+				xw.WriteString("2");
+				xw.WriteEndAttribute();
+				xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
+				xw.WriteString(divisa.Nombre);
+				xw.WriteEndElement();
 
-					xw.WriteStartElement("text");
-					xw.WriteStartAttribute("id");
-					xw.WriteString("2");
-					xw.WriteEndAttribute();
-					xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
-					xw.WriteString(divisa.Nombre);
-					xw.WriteEndElement();
+				xw.WriteStartElement("text");
+				xw.WriteStartAttribute("id");
+				xw.WriteString("3");
+				xw.WriteEndAttribute();
+				xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
+				xw.WriteString(divisa.Nombre);
+				xw.WriteEndElement();
 
-					xw.WriteStartElement("text");
-					xw.WriteStartAttribute("id");
-					xw.WriteString("3");
-					xw.WriteEndAttribute();
-					xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
-					xw.WriteString(divisa.Nombre);
-					xw.WriteEndElement();
-
-					xw.WriteStartElement("text");
-					xw.WriteStartAttribute("id");
-					xw.WriteString("4");
-					xw.WriteEndAttribute();
-					xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
-					xw.WriteString(divisa.Nombre);
-					xw.WriteEndElement();
+				xw.WriteStartElement("text");
+				xw.WriteStartAttribute("id");
+				xw.WriteString("4");
+				xw.WriteEndAttribute();
+				xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
+				xw.WriteString(divisa.Nombre);
+				xw.WriteEndElement();
 
 
-					xw.WriteEndElement(); // binding
-					xw.WriteEndElement(); // visual
-					xw.WriteEndElement(); // tile
+				xw.WriteEndElement(); // binding
+				xw.WriteEndElement(); // visual
+				xw.WriteEndElement(); // tile
 
-					xw.WriteEndDocument();
-					xw.Flush();
+				xw.WriteEndDocument();
+				xw.Flush();
 
-					destination.Seek(0, SeekOrigin.Begin);
-					var destBlobReference = container.GetBlobReference(string.Format("{0}.xml", fileName));
-					destBlobReference.Properties.ContentType = "text/xml";
-					destBlobReference.Properties.ContentEncoding = "ISO-8859-1";
-					destBlobReference.UploadFromStream(destination);
-				}
+				destination.Seek(0, SeekOrigin.Begin);
+				var destBlobReference = container.GetBlobReference(string.Format("{0}.xml", fileName));
+				destBlobReference.Properties.ContentType = "text/xml";
+				destBlobReference.Properties.ContentEncoding = "ISO-8859-1";
+				destBlobReference.UploadFromStream(destination);
 			}
 		}
 
