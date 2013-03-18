@@ -24,6 +24,17 @@ namespace TileUpdateWorker
 			}
 		}
 
+		public override bool OnStart()
+		{
+			// Set the maximum number of concurrent connections 
+			ServicePointManager.DefaultConnectionLimit = 12;
+
+			// For information on handling configuration changes
+			// see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
+
+			return base.OnStart();
+		}
+
 		private void CreateXmlFile(DivisaModel divisas)
 		{
 			//<tile>
@@ -100,17 +111,6 @@ namespace TileUpdateWorker
 					destBlobReference.UploadFromStream(destination);
 				}
 			}
-		}
-
-		public override bool OnStart()
-		{
-			// Set the maximum number of concurrent connections 
-			ServicePointManager.DefaultConnectionLimit = 12;
-
-			// For information on handling configuration changes
-			// see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-
-			return base.OnStart();
 		}
 
 		private T SendRequestGetResponse<T>(Uri urlToSearch, Func<T> executeForNullOrError) where T : class
