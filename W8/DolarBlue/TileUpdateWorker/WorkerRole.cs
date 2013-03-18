@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using BTB.Utilities;
+using DolarBlue.BLL;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
@@ -133,28 +134,6 @@ namespace TileUpdateWorker
 			{
 				return executeForNullOrError();
 			}
-		}
-
-		protected class DivisaModel
-		{
-			public DivisaModel()
-			{
-				Divisas = new List<DivisaViewModel>();
-			}
-
-			public IList<DivisaViewModel> Divisas { get; set; }
-
-			public DateTime Actualizacion { get; set; }
-		}
-
-		protected class DivisaViewModel
-		{
-			public string Nombre { get; set; }
-			public string ValorCompra { get; set; }
-			public string ValorVenta { get; set; }
-			public string Variacion { get; set; }
-			public string Simbolo { get; set; }
-			public string Actualizacion { get; set; }
 		}
 	}
 }

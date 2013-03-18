@@ -69,6 +69,10 @@
       <Project>{37A6CACD-2B57-48E2-88DF-DFF4E25178EB}</Project>
       <Name>BTB.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DolarBlue.BLL\DolarBlue.BLL.csproj">
+      <Project>{4EE0A2C7-2B17-4FF5-BF39-41994D2EA260}</Project>
+      <Name>DolarBlue.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GBellmann.Azure.Storage\GBellmann.Azure.Storage.csproj">
       <Project>{f439f8bb-4abf-4d3b-91cb-86fe95ccc612}</Project>
       <Name>GBellmann.Azure.Storage</Name>
