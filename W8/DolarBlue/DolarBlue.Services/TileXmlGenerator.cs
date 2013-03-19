@@ -23,7 +23,7 @@ namespace DolarBlue.Services
 				GenerateXmlFile(xw, divisa);
 
 				destination.Seek(0, SeekOrigin.Begin);
-				var destBlobReference = container.GetBlobReference(string.Format("{0}.xml", fileName));
+				var destBlobReference = container.GetBlobReference(fileName);
 				destBlobReference.Properties.ContentType = "text/xml";
 				destBlobReference.Properties.ContentEncoding = "ISO-8859-1";
 				destBlobReference.UploadFromStream(destination);
