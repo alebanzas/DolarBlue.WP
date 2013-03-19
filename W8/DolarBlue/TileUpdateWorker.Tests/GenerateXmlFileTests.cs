@@ -33,8 +33,6 @@ namespace TileUpdateWorker.Tests
 				var xw = XmlWriter.Create(destination, wSettings);
 
 				tileXmlGenerator.GenerateXmlFile(xw, divisa);
-
-				//destination.Write(xw);
 				
 				destination.Flush();
 			}
