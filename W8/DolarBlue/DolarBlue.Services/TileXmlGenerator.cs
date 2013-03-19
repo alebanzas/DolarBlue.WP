@@ -61,7 +61,6 @@ namespace DolarBlue.Services
 			xw.WriteString("2");
 			xw.WriteEndAttribute();
 			xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
-			xw.WriteString(divisa.Nombre);
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
@@ -69,7 +68,6 @@ namespace DolarBlue.Services
 			xw.WriteString("3");
 			xw.WriteEndAttribute();
 			xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
-			xw.WriteString(divisa.Nombre);
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
@@ -77,7 +75,6 @@ namespace DolarBlue.Services
 			xw.WriteString("4");
 			xw.WriteEndAttribute();
 			xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
-			xw.WriteString(divisa.Nombre);
 			xw.WriteEndElement();
 
 
