@@ -64,6 +64,10 @@
       <Project>{4EE0A2C7-2B17-4FF5-BF39-41994D2EA260}</Project>
       <Name>DolarBlue.BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DolarBlue.Services\DolarBlue.Services.csproj">
+      <Project>{A25B768E-8F09-43D8-A282-362529AB4827}</Project>
+      <Name>DolarBlue.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TileUpdateWorker\TileUpdateWorker.csproj">
       <Project>{8b6ee7db-e497-4127-8609-491d3ffc8da0}</Project>
       <Name>TileUpdateWorker</Name>
