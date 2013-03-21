@@ -37,6 +37,14 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DolarBlue.TileUpdate.Web\DolarBlue.TileUpdate.Web.csproj">
+      <Name>DolarBlue.TileUpdate.Web</Name>
+      <Project>{c9a9a198-6fe0-45f0-83a9-c4a8e18a6937}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>DolarBlue.TileUpdate.Web</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\TileUpdateWorker\TileUpdateWorker.csproj">
       <Name>TileUpdateWorker</Name>
       <Project>{8b6ee7db-e497-4127-8609-491d3ffc8da0}</Project>

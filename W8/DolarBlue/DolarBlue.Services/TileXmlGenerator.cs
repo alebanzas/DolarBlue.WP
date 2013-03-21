@@ -11,7 +11,8 @@ namespace DolarBlue.Services
 	{
 		public void GenerateAndSaveXmlFromDivisa(DivisaViewModel divisa)
 		{
-			var fileName = string.Format("{0}.xml", divisa.Nombre.ToUrl());
+			string nombre = divisa.Nombre.ToUrl();
+			var fileName = string.Format("{0}.xml", nombre);
 			var blobStorageType = GBellmann.Azure.Storage.AzureAccount.DefaultAccount().CreateCloudBlobClient();
 			var container = blobStorageType.GetContainerReference("dolarblue");
 

@@ -28,8 +28,9 @@
 	        notifications.TileUpdateManager.createTileUpdaterForApplication().enableNotificationQueue(true);
 
     		var urisToPoll = [
-    			new Windows.Foundation.Uri("http://servicio.abhosting.com.ar/divisa/oficial.xml"),
-    			new Windows.Foundation.Uri("http://servicio.abhosting.com.ar/divisa/blue.xml")
+    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar.xml"),
+    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar-blue.xml"),
+    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar-turistico.xml")
     		];
     		var recurrence = notifications.PeriodicUpdateRecurrence.hour;
     		
