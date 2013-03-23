@@ -24,17 +24,17 @@
 	        } else {
 				Utils.showConnectionError();
 	        }
-    		
-	        notifications.TileUpdateManager.createTileUpdaterForApplication().enableNotificationQueue(true);
+    		var tileUpdaterForApplication = notifications.TileUpdateManager.createTileUpdaterForApplication();
+    		tileUpdaterForApplication.enableNotificationQueue(true);
 
     		var urisToPoll = [
     			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar"),
     			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar-blue"),
     			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar-turistico")
     		];
-    		var recurrence = notifications.PeriodicUpdateRecurrence.hour;
+    		var recurrence = notifications.PeriodicUpdateRecurrence.halfHour;
     		
-    		notifications.TileUpdateManager.createTileUpdaterForApplication().startPeriodicUpdateBatch(urisToPoll, recurrence);
+    		tileUpdaterForApplication.startPeriodicUpdateBatch(urisToPoll, recurrence);
         },
 
         unload: function () {
