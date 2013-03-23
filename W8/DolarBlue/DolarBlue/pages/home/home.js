@@ -28,9 +28,9 @@
 	        notifications.TileUpdateManager.createTileUpdaterForApplication().enableNotificationQueue(true);
 
     		var urisToPoll = [
-    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar.xml"),
-    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar-blue.xml"),
-    			new Windows.Foundation.Uri("http://127.0.0.1:10000/devstoreaccount1/dolarblue/dolar-turistico.xml")
+    			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar"),
+    			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar-blue"),
+    			new Windows.Foundation.Uri("http://dolarblue.cloudapp.net/api/dolarblue/dolar-turistico")
     		];
     		var recurrence = notifications.PeriodicUpdateRecurrence.hour;
     		
