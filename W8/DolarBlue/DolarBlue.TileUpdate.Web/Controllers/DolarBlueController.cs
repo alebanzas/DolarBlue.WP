@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BTB.Utilities;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace DolarBlue.TileUpdate.Web.Controllers
@@ -32,8 +33,8 @@ namespace DolarBlue.TileUpdate.Web.Controllers
 			    response.StatusCode = HttpStatusCode.OK;
 			    response.Content = new StringContent(xml);
 			    response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
-				response.Content.Headers.Add("X-WNS-Expires", DateTime.UtcNow.AddDays(1).ToString("R"));
-			    response.Content.Headers.Add("X-WNS-Tag", tipoDolar);
+				response.Content.Headers.Add("X-WNS-Expires", DateTime.UtcNow.AddHours(6).ToString("R"));
+			    response.Content.Headers.Add("X-WNS-Tag", tipoDolar.Undasherize());
 		    }
 		    catch (Exception e)
 		    {
