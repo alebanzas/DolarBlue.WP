@@ -175,7 +175,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DolarBlueController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -309,6 +308,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BTB.Utilities\BTB.Utilities.csproj">
+      <Project>{37A6CACD-2B57-48E2-88DF-DFF4E25178EB}</Project>
+      <Name>BTB.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GBellmann.Azure.Storage\GBellmann.Azure.Storage.csproj">
       <Project>{f439f8bb-4abf-4d3b-91cb-86fe95ccc612}</Project>
       <Name>GBellmann.Azure.Storage</Name>
