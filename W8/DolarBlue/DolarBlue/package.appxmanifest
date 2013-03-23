@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="4083gbellmann.DolarBlue" Version="1.0.0.0" Publisher="CN=4166C0B8-67A7-403D-81BE-B4769D9C7D0D" />
+  <Identity Name="4083gbellmann.DolarBlue" Version="1.0.1.0" Publisher="CN=4166C0B8-67A7-403D-81BE-B4769D9C7D0D" />
   <Properties>
     <DisplayName>Dolar Blue</DisplayName>
     <PublisherDisplayName>Guillermo Bellmann</PublisherDisplayName>
