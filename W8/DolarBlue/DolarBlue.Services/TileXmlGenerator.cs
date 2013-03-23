@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using BTB.Utilities;
@@ -56,21 +57,21 @@ namespace DolarBlue.Services
 			xw.WriteStartAttribute("id");
 			xw.WriteString("1");
 			xw.WriteEndAttribute();
-			xw.WriteString(divisa.Nombre.Unaccent());
+			xw.WriteString(divisa.Nombre.Unaccent().Split(' ').Last());
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
 			xw.WriteStartAttribute("id");
 			xw.WriteString("2");
 			xw.WriteEndAttribute();
-			xw.WriteString(string.Format("Compra: {0}", divisa.ValorCompra));
+			xw.WriteString(string.Format("Compra: $ {0}", divisa.ValorCompra));
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
 			xw.WriteStartAttribute("id");
 			xw.WriteString("3");
 			xw.WriteEndAttribute();
-			xw.WriteString(string.Format("Venta: {0}", divisa.ValorVenta));
+			xw.WriteString(string.Format("Venta: $ {0}", divisa.ValorVenta));
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
