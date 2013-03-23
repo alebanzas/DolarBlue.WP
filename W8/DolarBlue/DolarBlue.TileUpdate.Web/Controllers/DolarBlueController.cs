@@ -2,42 +2,22 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Mvc;
+using System.Web.Http;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace DolarBlue.TileUpdate.Web.Controllers
 {
-    public class DolarBlueController : Controller
+    public class DolarBlueController : ApiController
     {
         //
         // GET: /DolarBlue/Oficial
 
-        public HttpResponseMessage Oficial()
+        public HttpResponseMessage Get(string id)
         {
-			var response = GenerateResponseMessage("dolar");
+			var response = GenerateResponseMessage(id);
 
 	        return response;
         }
-
-		//
-		// GET: /DolarBlue/Blue
-
-		public HttpResponseMessage Blue()
-		{
-			var response = GenerateResponseMessage("dolar-blue");
-
-			return response;
-		}
-
-		//
-		// GET: /DolarBlue/Turista
-
-		public HttpResponseMessage Turista()
-		{
-			var response = GenerateResponseMessage("dolar-turista");
-
-			return response;
-		}
 
 	    private HttpResponseMessage GenerateResponseMessage(string tipoDolar)
 	    {
@@ -47,7 +27,7 @@ namespace DolarBlue.TileUpdate.Web.Controllers
 		    var response = new HttpResponseMessage();
 		    try
 		    {
-				var xml = container.GetBlobReference(string.Format("dolarblue/{0}.xml", tipoDolar)).DownloadText();
+				var xml = container.GetBlobReference(string.Format("{0}.xml", tipoDolar)).DownloadText();
 
 			    response.StatusCode = HttpStatusCode.OK;
 			    response.Content = new StringContent(xml);

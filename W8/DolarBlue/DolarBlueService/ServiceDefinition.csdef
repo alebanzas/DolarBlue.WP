@@ -16,8 +16,8 @@
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
     </Endpoints>
-    <Imports>
-      <Import moduleName="Diagnostics" />
-    </Imports>
-  </WebRole>
+		<ConfigurationSettings>
+			<Setting name="GBellmannCloudStorageConnectionString" />
+		</ConfigurationSettings>
+	</WebRole>
 </ServiceDefinition>
