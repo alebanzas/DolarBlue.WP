@@ -88,7 +88,7 @@
     	request.data.properties.description = "Obtené la cotización actualizada a cada momento.";
 
     	var datos = "Cotización actual: ";
-    	var html = "<h2>Cotización del dólar oficial y Blue</h2>";
+    	var html = "<h2>Cotización del dólar</h2>";
     	Data.exchangeRates.forEach(function (divisa) {
     		datos = datos + divisa.Nombre + ": $" + divisa.ValorVenta + ". ";
     		html = html + "<p><span>" + divisa.Nombre + ": </span><span><strong>$" + divisa.ValorVenta + "</strong></span> <span>(Actualizado: " + divisa.Actualizacion + ")</span></p>";
