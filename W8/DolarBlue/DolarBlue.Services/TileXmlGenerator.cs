@@ -35,9 +35,11 @@ namespace DolarBlue.Services
 		{
 			//<tile>
 			//  <visual>
-			//	<binding template="TileSquareText02">
+			//	<binding template="TileSquareText01">
 			//	  <text id="1">Text Field 1</text>
 			//	  <text id="2">Text Field 2</text>
+			//	  <text id="3">Text Field 3</text>
+			//	  <text id="4">Text Field 4</text>
 			//	</binding>  
 			//  </visual>
 			//</tile>
@@ -54,7 +56,7 @@ namespace DolarBlue.Services
 			xw.WriteStartAttribute("id");
 			xw.WriteString("1");
 			xw.WriteEndAttribute();
-			xw.WriteString(divisa.Nombre);
+			xw.WriteString(divisa.Nombre.Unaccent());
 			xw.WriteEndElement();
 
 			xw.WriteStartElement("text");
@@ -75,7 +77,7 @@ namespace DolarBlue.Services
 			xw.WriteStartAttribute("id");
 			xw.WriteString("4");
 			xw.WriteEndAttribute();
-			xw.WriteString(string.Format("Actualizado: {0}", divisa.Actualizacion));
+			xw.WriteString(divisa.Actualizacion);
 			xw.WriteEndElement();
 
 
