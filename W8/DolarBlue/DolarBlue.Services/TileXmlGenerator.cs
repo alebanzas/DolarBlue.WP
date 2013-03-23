@@ -78,7 +78,7 @@ namespace DolarBlue.Services
 			xw.WriteStartAttribute("id");
 			xw.WriteString("4");
 			xw.WriteEndAttribute();
-			xw.WriteString(divisa.Actualizacion);
+			xw.WriteString(divisa.Actualizacion.Replace(" ", ""));
 			xw.WriteEndElement();
 
 
