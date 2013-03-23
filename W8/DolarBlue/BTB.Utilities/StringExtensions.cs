@@ -90,6 +90,11 @@ namespace BTB.Utilities
 			return underscoredWord.Replace('_', '-').Replace(' ', '-');
 		}
 
+		public static string Undasherize(this string dasherizedWord)
+		{
+			return dasherizedWord.Replace("-", "");
+		}
+
 		public static string Unaccent(this string word)
 		{
 			return UnaccentRules.Aggregate(word, (current, rule) => rule.Regex.Replace(current, rule.Replacement));
