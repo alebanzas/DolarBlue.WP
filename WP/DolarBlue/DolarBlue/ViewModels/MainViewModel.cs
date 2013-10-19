@@ -19,6 +19,8 @@ namespace DolarBlue.ViewModels
         /// </summary>
         public ObservableCollection<ItemViewModel> Items { get; private set; }
 
+        public ObservableCollection<ItemViewModel> ItemsRofex { get; private set; }
+
         public ObservableCollection<ConversionViewModel> TiposConversion { get; private set; }
 
         public ObservableCollection<ConversionViewModel> Conversiones { get; private set; }
@@ -42,6 +44,17 @@ namespace DolarBlue.ViewModels
 
         public bool IsDataLoaded
         {
+            get { return IsDataLoadedDivisa && IsDataLoadedRofex; }
+        }
+
+
+        public bool IsDataLoadedDivisa
+        {
+            get;
+            private set;
+        }
+        public bool IsDataLoadedRofex
+        {
             get;
             private set;
         }
@@ -56,13 +69,13 @@ namespace DolarBlue.ViewModels
             Conversiones.Clear();
 
             var peso = new ConversionViewModel
-                {
-                    Nombre = "Peso", 
-                    ValorVenta = 1, 
-                    ValorConvertido = 1, 
-                    Simbolo = "$",
-                    ValorConvertir = 1,
-                };
+            {
+                Nombre = "Peso",
+                ValorVenta = 1,
+                ValorConvertido = 1,
+                Simbolo = "$",
+                ValorConvertir = 1,
+            };
             TiposConversion.Add(peso);
             Conversiones.Add(peso.DeepClone());
 
@@ -71,20 +84,31 @@ namespace DolarBlue.ViewModels
                 Items.Add(itemViewModel);
 
                 double venta;
-                if (!double.TryParse(itemViewModel.ValorVenta.Replace(',','.').Split(' ')[1], NumberStyles.Any, CultureInfo.InvariantCulture, out venta)) continue;
+                if (!double.TryParse(itemViewModel.ValorVenta.Replace(',', '.').Split(' ')[1], NumberStyles.Any, CultureInfo.InvariantCulture, out venta)) continue;
 
                 var divisa = new ConversionViewModel
-                    {
-                        Nombre = itemViewModel.Nombre, 
-                        ValorVenta = venta, 
-                        ValorConvertido = venta, 
-                        Simbolo = itemViewModel.Simbolo,
-                        ValorConvertir = 1,
-                    };
+                {
+                    Nombre = itemViewModel.Nombre,
+                    ValorVenta = venta,
+                    ValorConvertido = venta,
+                    Simbolo = itemViewModel.Simbolo,
+                    ValorConvertir = 1,
+                };
                 TiposConversion.Add(divisa);
                 Conversiones.Add(divisa.DeepClone(peso.Simbolo));
             }
-            IsDataLoaded = true;
+            IsDataLoadedDivisa = true;
+        }
+
+        public void LoadDataRofex(Collection<ItemViewModel> items)
+        {
+            ItemsRofex.Clear();
+
+            foreach (var itemViewModel in items)
+            {
+                Items.Add(itemViewModel);
+            }
+            IsDataLoadedRofex = true;
         }
 
         /// <summary>

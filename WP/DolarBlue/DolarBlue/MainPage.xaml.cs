@@ -30,6 +30,9 @@ namespace DolarBlue
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            MobFoxAdControl.PublisherID = "336b241302471376ed5709debc76bac3";
+            MobFoxAdControl.TestMode = false;
+
             if (!App.ViewModel.IsDataLoaded)
             {
                 LoadData();
@@ -63,6 +66,12 @@ namespace DolarBlue
                 httpReq.Method = "GET";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
+
+                var httpReqRofex = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/rofex/?type=WP&version=2"));
+                httpReqRofex.Method = "GET";
+                httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
+
+
                 var httpReq2 = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/message/?type=WP&version=2"));
                 httpReq2.Method = "GET";
                 httpReq2.BeginGetResponse(HTTPWebRequestMessageCallBack, httpReq2);
@@ -94,6 +103,27 @@ namespace DolarBlue
             }
         }
 
+        private void HTTPWebRequestRofexCallBack(IAsyncResult result)
+        {
+            try
+            {
+                var httpRequest = (HttpWebRequest)result.AsyncState;
+                var response = httpRequest.EndGetResponse(result);
+                var stream = response.GetResponseStream();
+
+                var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
+                var o = (DivisaModel)serializer.ReadObject(stream);
+
+                Dispatcher.BeginInvoke(new DelegateUpdateRofexWebBrowser(UpdateCotizacionesRofex), o);
+            }
+            catch (Exception)
+            {
+                EndRequest();
+                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
+                Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones rofex. Verifique su conexión a internet."));
+            }
+        }
+
         private void HTTPWebRequestMessageCallBack(IAsyncResult result)
         {
             try
@@ -117,7 +147,7 @@ namespace DolarBlue
         private void UpdateCotizaciones(DivisaModel model)
         {
             var result = new Collection<ItemViewModel>();
-            
+
             foreach (var divisaViewModel in model.Divisas)
             {
                 result.Add(new ItemViewModel
@@ -133,6 +163,31 @@ namespace DolarBlue
                 });
             }
             App.ViewModel.LoadData(result);
+            EndRequest();
+        }
+
+
+
+        delegate void DelegateUpdateRofexWebBrowser(DivisaModel local);
+        private void UpdateCotizacionesRofex(DivisaModel model)
+        {
+            var result = new Collection<ItemViewModel>();
+
+            foreach (var divisaViewModel in model.Divisas)
+            {
+                result.Add(new ItemViewModel
+                {
+                    Nombre = divisaViewModel.Nombre,
+                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
+                    //                                        divisaViewModel.ValorCompra,
+                    //                                        divisaViewModel.ValorVenta),
+                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                    Simbolo = divisaViewModel.Simbolo,
+                });
+            }
+            App.ViewModel.LoadDataRofex(result);
             EndRequest();
         }
 
