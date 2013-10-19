@@ -10,6 +10,7 @@ namespace DolarBlue.ViewModels
         public MainViewModel()
         {
             Items = new ObservableCollection<ItemViewModel>();
+            ItemsRofex = new ObservableCollection<ItemViewModel>();
             TiposConversion = new ObservableCollection<ConversionViewModel>();
             Conversiones = new ObservableCollection<ConversionViewModel>();
         }
@@ -106,7 +107,7 @@ namespace DolarBlue.ViewModels
 
             foreach (var itemViewModel in items)
             {
-                Items.Add(itemViewModel);
+                ItemsRofex.Add(itemViewModel);
             }
             IsDataLoadedRofex = true;
         }

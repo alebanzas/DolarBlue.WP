@@ -17,7 +17,11 @@ namespace DolarBlue
         // Constructor
         public MainPage()
         {
+
             InitializeComponent();
+
+            MobFoxAdControl.PublisherID = "336b241302471376ed5709debc76bac3";
+            MobFoxAdControl.TestMode = false;
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
@@ -30,9 +34,6 @@ namespace DolarBlue
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            MobFoxAdControl.PublisherID = "336b241302471376ed5709debc76bac3";
-            MobFoxAdControl.TestMode = false;
-
             if (!App.ViewModel.IsDataLoaded)
             {
                 LoadData();
@@ -65,7 +66,6 @@ namespace DolarBlue
                 var httpReq = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?type=WP&version=2"));
                 httpReq.Method = "GET";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
-
 
                 var httpReqRofex = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/rofex/?type=WP&version=2"));
                 httpReqRofex.Method = "GET";
