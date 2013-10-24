@@ -70,11 +70,6 @@ namespace DolarBlue
                 var httpReqRofex = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/rofex/?type=WP&version=2"));
                 httpReqRofex.Method = "GET";
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
-
-
-                var httpReq2 = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/message/?type=WP&version=2"));
-                httpReq2.Method = "GET";
-                httpReq2.BeginGetResponse(HTTPWebRequestMessageCallBack, httpReq2);
             }
             else
             {
@@ -122,25 +117,6 @@ namespace DolarBlue
                 //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
                 Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones rofex. Verifique su conexión a internet."));
             }
-        }
-
-        private void HTTPWebRequestMessageCallBack(IAsyncResult result)
-        {
-            try
-            {
-                var httpRequest = (HttpWebRequest)result.AsyncState;
-                var response = httpRequest.EndGetResponse(result);
-                var stream = response.GetResponseStream();
-
-                var serializer = new DataContractJsonSerializer(typeof(MessageModel));
-                var o = (MessageModel)serializer.ReadObject(stream);
-
-                if(string.IsNullOrWhiteSpace(o.Message)) return;
-
-                Dispatcher.BeginInvoke(() => MessageBox.Show(o.Message));
-            }
-            catch (Exception e)
-            {}
         }
 
         delegate void DelegateUpdateWebBrowser(DivisaModel local);
