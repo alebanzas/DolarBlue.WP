@@ -52,6 +52,7 @@ namespace DolarBlue
             if (NetworkInterface.GetIsNetworkAvailable())
             {
                 ConnectionError.Visibility = Visibility.Collapsed;
+                ConnectionErrorRofex.Visibility = Visibility.Collapsed;
                 _progress.Text = "Buscando cotizaciones";
                 SystemTray.SetIsVisible(this, true);
                 SystemTray.SetProgressIndicator(this, _progress);
@@ -63,10 +64,13 @@ namespace DolarBlue
                         applicationBarIconButton.IsEnabled = false;
                 });
 
+                _requestCount = 2;
+                Loading.Visibility = Visibility.Visible;
                 var httpReq = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?type=WP&version=2"));
                 httpReq.Method = "GET";
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
+                LoadingRofex.Visibility = Visibility.Visible;
                 var httpReqRofex = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/rofex/?type=WP&version=2"));
                 httpReqRofex.Method = "GET";
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
@@ -139,10 +143,9 @@ namespace DolarBlue
                 });
             }
             App.ViewModel.LoadData(result);
+            Loading.Visibility = Visibility.Collapsed;
             EndRequest();
         }
-
-
 
         delegate void DelegateUpdateRofexWebBrowser(DivisaModel local);
         private void UpdateCotizacionesRofex(DivisaModel model)
@@ -164,27 +167,37 @@ namespace DolarBlue
                 });
             }
             App.ViewModel.LoadDataRofex(result);
+            LoadingRofex.Visibility = Visibility.Collapsed;
             EndRequest();
         }
 
+        private int _requestCount;
         private void EndRequest()
         {
+            _requestCount--;
             Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-                    if (applicationBarIconButton != null)
-                        applicationBarIconButton.IsEnabled = true;
+                    if (_requestCount == 0)
+                    {
+                        var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                        if (applicationBarIconButton != null)
+                            applicationBarIconButton.IsEnabled = true;
 
-                    Loading.Visibility = Visibility.Collapsed;
-                    SystemTray.SetProgressIndicator(this, null);
+                        SystemTray.SetProgressIndicator(this, null);
+                    }
                 });
         }
 
         private void ShowErrorConnection()
         {
-            //Luego le aviso al usuario que no se pudo cargar nueva información.
-            ConnectionError.Visibility = Visibility.Visible;
-            Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo."));
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                ConnectionError.Visibility = Visibility.Visible;
+                ConnectionErrorRofex.Visibility = Visibility.Visible;
+                Loading.Visibility = Visibility.Collapsed;
+                LoadingRofex.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo.");
+            });
         }
 
         #endregion
