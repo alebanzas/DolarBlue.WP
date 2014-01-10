@@ -79,6 +79,7 @@
     <Compile Include="Conversor.xaml.cs">
       <DependentUpon>Conversor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HttpClient.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -121,6 +122,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="PanoramaBackground.png" />
+    <Content Include="Resources\Icons\ApplicationBar\appbar.feature.pin.rest.png" />
     <Content Include="Resources\Icons\ApplicationBar\sync.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>

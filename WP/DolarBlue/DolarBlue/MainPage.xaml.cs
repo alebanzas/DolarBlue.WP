@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
 using DolarBlue.ViewModels;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace DolarBlue
@@ -51,28 +54,31 @@ namespace DolarBlue
         {
             if (NetworkInterface.GetIsNetworkAvailable())
             {
-                ConnectionError.Visibility = Visibility.Collapsed;
-                ConnectionErrorRofex.Visibility = Visibility.Collapsed;
-                _progress.Text = "Buscando cotizaciones";
-                SystemTray.SetIsVisible(this, true);
-                SystemTray.SetProgressIndicator(this, _progress);
-
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
+                    ConnectionError.Visibility = Visibility.Collapsed;
+                    ConnectionErrorRofex.Visibility = Visibility.Collapsed;
+                    _progress.Text = "Buscando cotizaciones";
+                    SystemTray.SetIsVisible(this, true);
+                    SystemTray.SetProgressIndicator(this, _progress);
+
                     var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
                     if (applicationBarIconButton != null)
                         applicationBarIconButton.IsEnabled = false;
+
+                    Loading.Visibility = Visibility.Visible;
+                    LoadingRofex.Visibility = Visibility.Visible;
+                    App.ViewModel.Items.Clear();
+                    App.ViewModel.ItemsRofex.Clear();
                 });
 
                 _requestCount = 2;
-                Loading.Visibility = Visibility.Visible;
-                var httpReq = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/?type=WP&version=2"));
-                httpReq.Method = "GET";
+                var httpClient = new HttpClient();
+                var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
                 LoadingRofex.Visibility = Visibility.Visible;
-                var httpReqRofex = (HttpWebRequest)HttpWebRequest.Create(new Uri("http://servicio.abhosting.com.ar/divisa/rofex/?type=WP&version=2"));
-                httpReqRofex.Method = "GET";
+                var httpReqRofex = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/rofex?type=WP&version=2.1.0.0"));
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
             }
             else
@@ -98,7 +104,10 @@ namespace DolarBlue
             {
                 EndRequest();
                 //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones. Verifique su conexión a internet."));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    ConnectionError.Visibility = Visibility.Visible;
+                });
             }
         }
 
@@ -119,7 +128,10 @@ namespace DolarBlue
             {
                 EndRequest();
                 //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                Dispatcher.BeginInvoke(() => MessageBox.Show("Ocurrió un error al obtener las cotizaciones rofex. Verifique su conexión a internet."));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    ConnectionErrorRofex.Visibility = Visibility.Visible;
+                });
             }
         }
 
@@ -210,6 +222,43 @@ namespace DolarBlue
         private void Conversor_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Conversor.xaml", UriKind.Relative));
+        }
+
+        private void RateReview_Click(object sender, EventArgs e)
+        {
+            var marketplaceReviewTask = new MarketplaceReviewTask();
+
+            marketplaceReviewTask.Show();
+        }
+
+        private void ButtonPin_Click(object sender, EventArgs e)
+        {
+            var tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+
+            if (tileToFind == null)
+            {
+                var periodicTask = new PeriodicTask("DolarBlue.Agent")
+                {
+                    Description = "Actualiza cotizacion del dolar en Tile",
+                    ExpirationTime = DateTime.Now.AddDays(1)
+                };
+                
+                if (ScheduledActionService.Find(periodicTask.Name) != null)
+                {
+                    ScheduledActionService.Remove("DolarBlue.Agent");
+                }
+                
+                ScheduledActionService.Add(periodicTask);
+
+                var newTileData = new StandardTileData
+                {
+                    Title = "Dolar",
+                    BackTitle = DateTime.UtcNow.ToShortTimeString(),
+                    BackContent = "Second content",
+                };
+
+                ShellTile.Create(new Uri("/MainPage.xaml?TileID=1", UriKind.Relative), newTileData);
+            }
         }
     }
 }
