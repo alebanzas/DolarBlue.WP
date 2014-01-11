@@ -10,8 +10,8 @@ namespace DolarBlue
 {
     public class HttpClient
     {
-        private const string AppKey = "8463adb194f44436a046ac36229f1571";
-        private const string AppSecret = "6855502326fe42f2b8ff63a9cbba52c8";
+        private const string AppKey = "78f00a47badb4b8eafadf5e7114d917a";
+        private const string AppSecret = "7a691d5e604f46628601eb6b8c4fca3a";
 
         public HttpWebRequest Get(Uri requestUrl)
         {
