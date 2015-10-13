@@ -38,8 +38,8 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,0" Width="432" Height="150">
-                                        <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Margin="12,0,0,0" FontSize="38" Height="60"/>
-                                        <TextBlock Text="{Binding ValorVenta}" TextWrapping="Wrap" Margin="270,-60,12,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                        <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Margin="12,0,0,0" FontSize="34" Height="60"/>
+                                        <TextBlock Text="{Binding ValorVenta}" TextWrapping="Wrap" Margin="260,-60,12,0" FontSize="40" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
                                         <TextBlock Text="{Binding CompraVenta}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                                         <TextBlock Text="{Binding Variacion}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                                         <TextBlock Text="{Binding Actualizacion}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
@@ -76,12 +76,34 @@
                 </Grid>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="tasas">
+                <Grid Grid.Row="1" Margin="0,-10,0,10">
+                    <TextBlock x:Name="LoadingTasas" Margin="15,0,-12,0" Opacity="0.7" Style="{StaticResource PhoneTextLargeStyle}">
+                		<Run Text="Actializando."/>
+                    </TextBlock>
+                    <TextBlock Visibility="Collapsed" x:Name="ConnectionErrorTasas" Margin="15,0,-12,0" Opacity="0.7" Style="{StaticResource PhoneTextLargeStyle}">
+                		<Run Text="No hay conexión a la red."/>
+                    </TextBlock>
+                    <ListBox ItemsSource="{Binding ItemsTasas}" Margin="0,-40,0,0" Height="450">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,0" Width="432" Height="95">
+                                    <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Margin="12,0,0,0" FontSize="22" Height="50"/>
+                                    <TextBlock Text="{Binding ValorVenta}" TextWrapping="Wrap" Margin="250,-30,12,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <TextBlock Text="{Binding Variacion}" TextWrapping="Wrap" Margin="12,-40,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PanoramaItem>
+            
             <controls:PanoramaItem Header="acerca de">
                 <ScrollViewer>
                     <TextBlock TextWrapping="Wrap" Margin="12,0,0,0">
 						Desarrollado por AleBanzas
                         <LineBreak /><LineBreak />
-                        Obtenga la cotización actualizada del dolar oficial y paralelo.
+                        Obtenga la cotización actualizada del dolar oficial y paralelo, rofex, y tasas.
                         <LineBreak /><LineBreak />
                         <LineBreak /><LineBreak />
                         La aplicación no almacena ningún tipo de información personal ni de identificación de la red ni del equipo. Solamente utiliza internet para obtener las cotizaciones.
@@ -103,6 +125,7 @@
             <shell:ApplicationBarIconButton Text="pin" IconUri="/Resources/Icons/ApplicationBar/appbar.feature.pin.rest.png"  Click="ButtonPin_Click" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Conversor de moneda" Click="Conversor_Click"/>
+                <!--shell:ApplicationBarMenuItem Text="opciones" Click="Opciones_Click"/-->
                 <shell:ApplicationBarMenuItem Text="danos tus comentarios" Click="RateReview_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>

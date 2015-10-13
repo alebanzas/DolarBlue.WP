@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Windows;
+using DolarBlue.ViewModels;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 
-namespace DolarBlue.Agent
+namespace DolarBlueAgent
 {
     public class ScheduledAgent : ScheduledTaskAgent
     {
@@ -49,21 +52,77 @@ namespace DolarBlue.Agent
         {
             if (task is PeriodicTask)
             {
-                // Execute periodic task actions here.
-                ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
-                if (tileToFind != null)
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    // Execute periodic task actions here.
+                    ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+                    if (tileToFind == null)
+                    {
+                        NotifyComplete();
+                        return;
+                    }
+
+                    //var httpClient = new HttpClient();
+                    //var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
+                    //httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
+                
+                    var newTileData = new StandardTileData
+                    {
+                        Title = "Dólar Blue",
+                        BackTitle = DateTime.UtcNow.ToShortTimeString(),
+                        BackContent = "",
+                    };
+
+                    tileToFind?.Update(newTileData);
+
+                    // If debugging is enabled, launch the agent again in one minute.
+#if DEBUG
+                    ScheduledActionService.LaunchForTest(task.Name, TimeSpan.FromSeconds(10));
+#endif
+
+                });
+            }
+
+        }
+
+        private void HTTPWebRequestCallBack(IAsyncResult result)
+        {
+            try
+            {
+                var httpRequest = (HttpWebRequest)result.AsyncState;
+                var response = httpRequest.EndGetResponse(result);
+                var stream = response.GetResponseStream();
+
+                var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
+                var o = (DivisaModel)serializer.ReadObject(stream);
+
+                var dolarblue = o.Divisas.FirstOrDefault(x => x.Nombre.Contains("Blue"));
+
+                if (dolarblue == null) return;
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     var newTileData = new StandardTileData
                     {
-                        Title = "Dolar",
+                        Title = "Dólar Blue",
                         BackTitle = DateTime.UtcNow.ToShortTimeString(),
-                        BackContent = "Second content",
+                        BackContent = dolarblue.ValorVenta,
                     };
-                    tileToFind.Update(newTileData);
-                }
-            }
 
-            NotifyComplete();
+                    var tileToFind =
+                        ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+
+                    tileToFind?.Update(newTileData);
+                });
+            }
+            catch (Exception)
+            {
+                
+            }
+            finally
+            {
+                NotifyComplete();
+            }
         }
     }
 }

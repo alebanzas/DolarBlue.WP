@@ -11,6 +11,7 @@ namespace DolarBlue.ViewModels
         {
             Items = new ObservableCollection<ItemViewModel>();
             ItemsRofex = new ObservableCollection<ItemViewModel>();
+            ItemsTasas = new ObservableCollection<ItemViewModel>();
             TiposConversion = new ObservableCollection<ConversionViewModel>();
             Conversiones = new ObservableCollection<ConversionViewModel>();
         }
@@ -21,6 +22,8 @@ namespace DolarBlue.ViewModels
         public ObservableCollection<ItemViewModel> Items { get; private set; }
 
         public ObservableCollection<ItemViewModel> ItemsRofex { get; private set; }
+
+        public ObservableCollection<ItemViewModel> ItemsTasas { get; private set; }
 
         public ObservableCollection<ConversionViewModel> TiposConversion { get; private set; }
 
@@ -45,7 +48,7 @@ namespace DolarBlue.ViewModels
 
         public bool IsDataLoaded
         {
-            get { return IsDataLoadedDivisa && IsDataLoadedRofex; }
+            get { return IsDataLoadedDivisa && IsDataLoadedRofex && IsDataLoadedTasas; }
         }
 
 
@@ -55,6 +58,11 @@ namespace DolarBlue.ViewModels
             private set;
         }
         public bool IsDataLoadedRofex
+        {
+            get;
+            private set;
+        }
+        public bool IsDataLoadedTasas
         {
             get;
             private set;
@@ -110,6 +118,17 @@ namespace DolarBlue.ViewModels
                 ItemsRofex.Add(itemViewModel);
             }
             IsDataLoadedRofex = true;
+        }
+
+        public void LoadDataTasas(Collection<ItemViewModel> items)
+        {
+            ItemsTasas.Clear();
+
+            foreach (var itemViewModel in items)
+            {
+                ItemsTasas.Add(itemViewModel);
+            }
+            IsDataLoadedTasas = true;
         }
 
         /// <summary>

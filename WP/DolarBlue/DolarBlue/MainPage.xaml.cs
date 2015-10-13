@@ -58,6 +58,7 @@ namespace DolarBlue
                 {
                     ConnectionError.Visibility = Visibility.Collapsed;
                     ConnectionErrorRofex.Visibility = Visibility.Collapsed;
+                    ConnectionErrorTasas.Visibility = Visibility.Collapsed;
                     _progress.Text = "Buscando cotizaciones";
                     SystemTray.SetIsVisible(this, true);
                     SystemTray.SetProgressIndicator(this, _progress);
@@ -68,8 +69,10 @@ namespace DolarBlue
 
                     Loading.Visibility = Visibility.Visible;
                     LoadingRofex.Visibility = Visibility.Visible;
+                    LoadingTasas.Visibility = Visibility.Visible;
                     App.ViewModel.Items.Clear();
                     App.ViewModel.ItemsRofex.Clear();
+                    App.ViewModel.ItemsTasas.Clear();
                 });
 
                 _requestCount = 2;
@@ -80,6 +83,10 @@ namespace DolarBlue
                 LoadingRofex.Visibility = Visibility.Visible;
                 var httpReqRofex = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/rofex?type=WP&version=2.1.0.0"));
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
+
+                LoadingTasas.Visibility = Visibility.Visible;
+                var httpReqTasas = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/tasas?type=WP&version=2.1.0.0"));
+                httpReqTasas.BeginGetResponse(HTTPWebRequestTasasCallBack, httpReqTasas);
             }
             else
             {
@@ -135,6 +142,30 @@ namespace DolarBlue
             }
         }
 
+        private void HTTPWebRequestTasasCallBack(IAsyncResult result)
+        {
+            try
+            {
+                var httpRequest = (HttpWebRequest)result.AsyncState;
+                var response = httpRequest.EndGetResponse(result);
+                var stream = response.GetResponseStream();
+
+                var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
+                var o = (DivisaModel)serializer.ReadObject(stream);
+
+                Dispatcher.BeginInvoke(new DelegateUpdateTasasWebBrowser(UpdateCotizacionesTasas), o);
+            }
+            catch (Exception)
+            {
+                EndRequest();
+                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    ConnectionErrorTasas.Visibility = Visibility.Visible;
+                });
+            }
+        }
+
         delegate void DelegateUpdateWebBrowser(DivisaModel local);
         private void UpdateCotizaciones(DivisaModel model)
         {
@@ -155,6 +186,8 @@ namespace DolarBlue
                 });
             }
             App.ViewModel.LoadData(result);
+            GenerateTile();
+
             Loading.Visibility = Visibility.Collapsed;
             EndRequest();
         }
@@ -183,6 +216,30 @@ namespace DolarBlue
             EndRequest();
         }
 
+        delegate void DelegateUpdateTasasWebBrowser(DivisaModel local);
+        private void UpdateCotizacionesTasas(DivisaModel model)
+        {
+            var result = new Collection<ItemViewModel>();
+
+            foreach (var divisaViewModel in model.Divisas)
+            {
+                result.Add(new ItemViewModel
+                {
+                    Nombre = divisaViewModel.Nombre,
+                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
+                    //                                        divisaViewModel.ValorCompra,
+                    //                                        divisaViewModel.ValorVenta),
+                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                    Simbolo = divisaViewModel.Simbolo,
+                });
+            }
+            App.ViewModel.LoadDataTasas(result);
+            LoadingTasas.Visibility = Visibility.Collapsed;
+            EndRequest();
+        }
+
         private int _requestCount;
         private void EndRequest()
         {
@@ -206,8 +263,10 @@ namespace DolarBlue
             {
                 ConnectionError.Visibility = Visibility.Visible;
                 ConnectionErrorRofex.Visibility = Visibility.Visible;
+                ConnectionErrorTasas.Visibility = Visibility.Visible;
                 Loading.Visibility = Visibility.Collapsed;
                 LoadingRofex.Visibility = Visibility.Collapsed;
+                LoadingTasas.Visibility = Visibility.Collapsed;
                 MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo.");
             });
         }
@@ -233,32 +292,66 @@ namespace DolarBlue
 
         private void ButtonPin_Click(object sender, EventArgs e)
         {
+            var name = "DolarBlueActualiza";
+
             var tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+
+            if (tileToFind != null) return;
+
+
+            var periodicTask = new PeriodicTask(name)
+            {
+                Description = "Actualiza cotizacion del dolar en Tile",
+            };
+                
+            if (ScheduledActionService.Find(name) != null)
+            {
+                ScheduledActionService.Remove(name);
+            }
+            ScheduledActionService.Add(periodicTask);
+
+            if (GenerateTile()) return;
+
+#if DEBUG
+            ScheduledActionService.LaunchForTest(name, TimeSpan.FromSeconds(10));
+#endif
+
+        }
+
+        private static bool GenerateTile()
+        {
+            if (!App.ViewModel.IsDataLoadedDivisa) return true;
+
+            var item = App.ViewModel.Items.FirstOrDefault(x => x.Nombre.Contains("Blue"));
+
+            if (item == null) return true;
+
+            var newTileData = new StandardTileData
+            {
+                Title = item.Nombre,
+                BackTitle = "DolarBlue",
+                BackContent = item.ValorVenta,
+            };
+
+
+            ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
 
             if (tileToFind == null)
             {
-                var periodicTask = new PeriodicTask("DolarBlue.Agent")
-                {
-                    Description = "Actualiza cotizacion del dolar en Tile",
-                    ExpirationTime = DateTime.Now.AddDays(1)
-                };
-                
-                if (ScheduledActionService.Find(periodicTask.Name) != null)
-                {
-                    ScheduledActionService.Remove("DolarBlue.Agent");
-                }
-                
-                ScheduledActionService.Add(periodicTask);
-
-                var newTileData = new StandardTileData
-                {
-                    Title = "Dolar",
-                    BackTitle = DateTime.UtcNow.ToShortTimeString(),
-                    BackContent = "Second content",
-                };
-
                 ShellTile.Create(new Uri("/MainPage.xaml?TileID=1", UriKind.Relative), newTileData);
             }
+            else
+            {
+                tileToFind.Update(newTileData);
+            }
+
+
+            return false;
+        }
+
+        private void Opciones_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Opciones.xaml", UriKind.Relative));
         }
     }
 }
