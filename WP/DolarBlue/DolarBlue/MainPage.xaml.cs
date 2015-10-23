@@ -77,15 +77,15 @@ namespace DolarBlue
 
                 _requestCount = 2;
                 var httpClient = new HttpClient();
-                var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
+                var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.2.2.8"));
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
                 LoadingRofex.Visibility = Visibility.Visible;
-                var httpReqRofex = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/rofex?type=WP&version=2.1.0.0"));
+                var httpReqRofex = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/rofex?type=WP&version=2.2.2.8"));
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
 
                 LoadingTasas.Visibility = Visibility.Visible;
-                var httpReqTasas = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/tasas?type=WP&version=2.1.0.0"));
+                var httpReqTasas = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/tasas?type=WP&version=2.2.2.8"));
                 httpReqTasas.BeginGetResponse(HTTPWebRequestTasasCallBack, httpReqTasas);
             }
             else
