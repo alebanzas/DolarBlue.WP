@@ -138,7 +138,7 @@ namespace DolarBlue.ViewModels
         {
             foreach (var conversion in Conversiones)
             {
-                conversion.ValorConvertido = valorConversion*conversion.ValorVenta / valorOrigen.ValorVenta;
+                conversion.ValorConvertido = conversion.ValorVenta / valorConversion;
                 conversion.Simbolo = valorOrigen.Simbolo;
                 conversion.ValorConvertir = valorConversion;
             }

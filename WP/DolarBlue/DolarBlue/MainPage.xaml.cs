@@ -157,75 +157,103 @@ namespace DolarBlue
         delegate void DelegateUpdateWebBrowser(DivisaModel local);
         private void UpdateCotizaciones(DivisaModel model)
         {
-            var result = new Collection<ItemViewModel>();
-
-            foreach (var divisaViewModel in model.Divisas)
+            try
             {
-                result.Add(new ItemViewModel
-                {
-                    Nombre = divisaViewModel.Nombre,
-                    ValorVenta = divisaViewModel.ValorVenta,
-                    CompraVenta = string.Format("compra {0} {2} | venta {1} {2}",
-                                                            divisaViewModel.ValorCompra,
-                                                            divisaViewModel.ValorVenta, divisaViewModel.Simbolo),
-                    Variacion = $"variación: {divisaViewModel.Variacion}",
-                    Actualizacion = $"actualización: {divisaViewModel.Actualizacion}",
-                    Simbolo = divisaViewModel.Simbolo,
-                });
-            }
-            App.ViewModel.LoadData(result);
-            GenerateTile();
+                var result = new Collection<ItemViewModel>();
 
-            Loading.Visibility = Visibility.Collapsed;
-            EndRequest();
+                foreach (var divisaViewModel in model.Divisas)
+                {
+                    result.Add(new ItemViewModel
+                    {
+                        Nombre = divisaViewModel.Nombre,
+                        ValorVenta = divisaViewModel.ValorVenta,
+                        CompraVenta = string.Format("compra {0} {2} | venta {1} {2}",
+                                                                divisaViewModel.ValorCompra,
+                                                                divisaViewModel.ValorVenta, divisaViewModel.Simbolo),
+                        Variacion = $"variación: {divisaViewModel.Variacion}",
+                        Actualizacion = $"actualización: {divisaViewModel.Actualizacion}",
+                        Simbolo = divisaViewModel.Simbolo,
+                    });
+                }
+                App.ViewModel.LoadData(result);
+                GenerateTile();
+
+                Loading.Visibility = Visibility.Collapsed;
+                EndRequest();
+            }
+            catch (Exception)
+            {
+                EndRequest();
+                ShowErrorConnection();
+            }
         }
 
         delegate void DelegateUpdateRofexWebBrowser(DivisaModel local);
         private void UpdateCotizacionesRofex(DivisaModel model)
         {
-            var result = new Collection<ItemViewModel>();
-
-            foreach (var divisaViewModel in model.Divisas)
+            try
             {
-                result.Add(new ItemViewModel
+
+                var result = new Collection<ItemViewModel>();
+
+                foreach (var divisaViewModel in model.Divisas)
                 {
-                    Nombre = divisaViewModel.Nombre,
-                    ValorVenta = divisaViewModel.ValorVenta,
-                    //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
-                    //                                        divisaViewModel.ValorCompra,
-                    //                                        divisaViewModel.ValorVenta),
-                    Variacion = $"variación: {divisaViewModel.Variacion}",
-                    //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
-                    Simbolo = divisaViewModel.Simbolo,
-                });
+                    result.Add(new ItemViewModel
+                    {
+                        Nombre = divisaViewModel.Nombre,
+                        ValorVenta = divisaViewModel.ValorVenta,
+                        //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
+                        //                                        divisaViewModel.ValorCompra,
+                        //                                        divisaViewModel.ValorVenta),
+                        Variacion = $"variación: {divisaViewModel.Variacion}",
+                        //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                        Simbolo = divisaViewModel.Simbolo,
+                    });
+                }
+                App.ViewModel.LoadDataRofex(result);
+                LoadingRofex.Visibility = Visibility.Collapsed;
+                EndRequest();
+
             }
-            App.ViewModel.LoadDataRofex(result);
-            LoadingRofex.Visibility = Visibility.Collapsed;
-            EndRequest();
+            catch (Exception)
+            {
+                EndRequest();
+                ShowErrorConnection();
+            }
         }
 
         delegate void DelegateUpdateTasasWebBrowser(DivisaModel local);
         private void UpdateCotizacionesTasas(DivisaModel model)
         {
-            var result = new Collection<ItemViewModel>();
-
-            foreach (var divisaViewModel in model.Divisas)
+            try
             {
-                result.Add(new ItemViewModel
+                
+                var result = new Collection<ItemViewModel>();
+
+                foreach (var divisaViewModel in model.Divisas)
                 {
-                    Nombre = divisaViewModel.Nombre,
-                    ValorVenta = $"{divisaViewModel.Simbolo} {divisaViewModel.ValorVenta}",
-                    //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
-                    //                                        divisaViewModel.ValorCompra,
-                    //                                        divisaViewModel.ValorVenta),
-                    Variacion = $"variación: {divisaViewModel.Variacion}",
-                    //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
-                    Simbolo = divisaViewModel.Simbolo,
-                });
+                    result.Add(new ItemViewModel
+                    {
+                        Nombre = divisaViewModel.Nombre,
+                        ValorVenta = $"{divisaViewModel.Simbolo} {divisaViewModel.ValorVenta}",
+                        //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
+                        //                                        divisaViewModel.ValorCompra,
+                        //                                        divisaViewModel.ValorVenta),
+                        Variacion = $"variación: {divisaViewModel.Variacion}",
+                        //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                        Simbolo = divisaViewModel.Simbolo,
+                    });
+                }
+                App.ViewModel.LoadDataTasas(result);
+                LoadingTasas.Visibility = Visibility.Collapsed;
+                EndRequest();
+
             }
-            App.ViewModel.LoadDataTasas(result);
-            LoadingTasas.Visibility = Visibility.Collapsed;
-            EndRequest();
+            catch (Exception)
+            {
+                EndRequest();
+                ShowErrorConnection();
+            }
         }
 
         private int _requestCount;
