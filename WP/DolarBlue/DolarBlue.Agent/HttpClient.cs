@@ -6,7 +6,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DolarBlue
+namespace DolarBlueAgent
 {
     public class HttpClient
     {

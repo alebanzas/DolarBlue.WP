@@ -176,12 +176,12 @@ namespace DolarBlue
                 result.Add(new ItemViewModel
                 {
                     Nombre = divisaViewModel.Nombre,
-                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
-                    CompraVenta = string.Format("compra $ {0} | venta $ {1}",
+                    ValorVenta = divisaViewModel.ValorVenta,
+                    CompraVenta = string.Format("compra {0} {2} | venta {1} {2}",
                                                             divisaViewModel.ValorCompra,
-                                                            divisaViewModel.ValorVenta),
-                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
-                    Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
+                                                            divisaViewModel.ValorVenta, divisaViewModel.Simbolo),
+                    Variacion = $"variación: {divisaViewModel.Variacion}",
+                    Actualizacion = $"actualización: {divisaViewModel.Actualizacion}",
                     Simbolo = divisaViewModel.Simbolo,
                 });
             }
@@ -202,11 +202,11 @@ namespace DolarBlue
                 result.Add(new ItemViewModel
                 {
                     Nombre = divisaViewModel.Nombre,
-                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    ValorVenta = divisaViewModel.ValorVenta,
                     //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
                     //                                        divisaViewModel.ValorCompra,
                     //                                        divisaViewModel.ValorVenta),
-                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    Variacion = $"variación: {divisaViewModel.Variacion}",
                     //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
                     Simbolo = divisaViewModel.Simbolo,
                 });
@@ -226,11 +226,11 @@ namespace DolarBlue
                 result.Add(new ItemViewModel
                 {
                     Nombre = divisaViewModel.Nombre,
-                    ValorVenta = string.Format("$ {0}", divisaViewModel.ValorVenta),
+                    ValorVenta = $"{divisaViewModel.Simbolo} {divisaViewModel.ValorVenta}",
                     //CompraVenta = string.Format("compra $ {0} | venta $ {1}",
                     //                                        divisaViewModel.ValorCompra,
                     //                                        divisaViewModel.ValorVenta),
-                    Variacion = string.Format("variación: {0}", divisaViewModel.Variacion),
+                    Variacion = $"variación: {divisaViewModel.Variacion}",
                     //Actualizacion = string.Format("actualización: {0}", divisaViewModel.Actualizacion),
                     Simbolo = divisaViewModel.Simbolo,
                 });
@@ -292,13 +292,12 @@ namespace DolarBlue
 
         private void ButtonPin_Click(object sender, EventArgs e)
         {
-            var name = "DolarBlueActualiza";
+            var name = "DolarBlueAgent";
 
             var tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
 
             if (tileToFind != null) return;
-
-
+            
             var periodicTask = new PeriodicTask(name)
             {
                 Description = "Actualiza cotizacion del dolar en Tile",
@@ -310,15 +309,14 @@ namespace DolarBlue
             }
             ScheduledActionService.Add(periodicTask);
 
-            if (GenerateTile()) return;
-
 #if DEBUG
             ScheduledActionService.LaunchForTest(name, TimeSpan.FromSeconds(10));
 #endif
 
+            GenerateTile(true);
         }
 
-        private static bool GenerateTile()
+        private static bool GenerateTile(bool force = false)
         {
             if (!App.ViewModel.IsDataLoadedDivisa) return true;
 
@@ -326,19 +324,23 @@ namespace DolarBlue
 
             if (item == null) return true;
 
+            ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault();
+
+            if (!force && tileToFind == null) return true;
+
             var newTileData = new StandardTileData
             {
                 Title = item.Nombre,
-                BackTitle = "DolarBlue",
-                BackContent = item.ValorVenta,
+                BackTitle = "Dolar Blue",
+                BackContent = $"{item.Simbolo} {item.ValorVenta}",
+                BackgroundImage = new Uri("/Background.png", UriKind.Relative),
             };
 
 
-            ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
-
+            
             if (tileToFind == null)
             {
-                ShellTile.Create(new Uri("/MainPage.xaml?TileID=1", UriKind.Relative), newTileData);
+                ShellTile.Create(new Uri("/", UriKind.Relative), newTileData);
             }
             else
             {

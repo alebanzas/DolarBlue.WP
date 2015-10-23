@@ -93,7 +93,7 @@ namespace DolarBlue.ViewModels
                 Items.Add(itemViewModel);
 
                 double venta;
-                if (!double.TryParse(itemViewModel.ValorVenta.Replace(',', '.').Split(' ')[1], NumberStyles.Any, CultureInfo.InvariantCulture, out venta)) continue;
+                if (!double.TryParse(itemViewModel.ValorVenta.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out venta)) continue;
 
                 var divisa = new ConversionViewModel
                 {

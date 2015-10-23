@@ -1,4 +1,4 @@
-﻿namespace DolarBlue.ViewModels
+﻿namespace DolarBlueAgent
 {
     public class DivisaViewModel
     {

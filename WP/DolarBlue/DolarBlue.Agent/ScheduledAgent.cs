@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
-using DolarBlue.ViewModels;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 
@@ -55,25 +54,25 @@ namespace DolarBlueAgent
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     // Execute periodic task actions here.
-                    ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+                    ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault();
                     if (tileToFind == null)
                     {
                         NotifyComplete();
                         return;
                     }
 
-                    //var httpClient = new HttpClient();
-                    //var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
-                    //httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
+                    var httpClient = new HttpClient();
+                    var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
+                    httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
                 
-                    var newTileData = new StandardTileData
-                    {
-                        Title = "Dólar Blue",
-                        BackTitle = DateTime.UtcNow.ToShortTimeString(),
-                        BackContent = "",
-                    };
-
-                    tileToFind?.Update(newTileData);
+                    //var newTileData = new StandardTileData
+                    //{
+                    //    Title = "Dólar Blue",
+                    //    BackTitle = DateTime.UtcNow.ToString("T"),
+                    //    BackContent = "",
+                    //};
+                    //
+                    //tileToFind?.Update(newTileData);
 
                     // If debugging is enabled, launch the agent again in one minute.
 #if DEBUG
@@ -96,21 +95,22 @@ namespace DolarBlueAgent
                 var serializer = new DataContractJsonSerializer(typeof(DivisaModel));
                 var o = (DivisaModel)serializer.ReadObject(stream);
 
-                var dolarblue = o.Divisas.FirstOrDefault(x => x.Nombre.Contains("Blue"));
+                var item = o.Divisas.FirstOrDefault(x => x.Nombre.Contains("Blue"));
 
-                if (dolarblue == null) return;
+                if (item == null) return;
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     var newTileData = new StandardTileData
                     {
-                        Title = "Dólar Blue",
-                        BackTitle = DateTime.UtcNow.ToShortTimeString(),
-                        BackContent = dolarblue.ValorVenta,
+                        Title = item.Nombre,
+                        BackTitle = "Dolar Blue",
+                        BackContent = $"{item.Simbolo} {item.ValorVenta}",
+                        BackgroundImage = new Uri("/Background.png", UriKind.Relative),
                     };
 
                     var tileToFind =
-                        ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
+                        ShellTile.ActiveTiles.FirstOrDefault();
 
                     tileToFind?.Update(newTileData);
                 });

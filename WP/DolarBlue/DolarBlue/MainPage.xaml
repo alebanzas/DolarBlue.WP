@@ -39,7 +39,10 @@
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,0" Width="432" Height="150">
                                         <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Margin="12,0,0,0" FontSize="34" Height="60"/>
-                                        <TextBlock Text="{Binding ValorVenta}" TextWrapping="Wrap" Margin="260,-60,12,0" FontSize="40" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="250,-60,12,0" >
+                                            <TextBlock Text="{Binding Simbolo}" TextWrapping="NoWrap" Margin="0" FontSize="24" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="40" Height="33"/>
+                                            <TextBlock Text="{Binding ValorVenta}" Margin="10,0,0,0" TextWrapping="NoWrap" FontSize="40" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding CompraVenta}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                                         <TextBlock Text="{Binding Variacion}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                                         <TextBlock Text="{Binding Actualizacion}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
@@ -67,7 +70,10 @@
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,0" Width="432" Height="80">
                                     <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Margin="12,0,0,0" FontSize="38" Height="60"/>
-                                    <TextBlock Text="{Binding ValorVenta}" TextWrapping="Wrap" Margin="250,-60,12,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="250,-60,12,0" >
+                                        <TextBlock Text="{Binding Simbolo}" TextWrapping="NoWrap" Margin="0" FontSize="24" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="40" Height="33"/>
+                                        <TextBlock Text="{Binding ValorVenta}" Margin="10,0,0,0" TextWrapping="NoWrap" FontSize="40" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    </StackPanel>
                                     <TextBlock Text="{Binding Variacion}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                                 </StackPanel>
                             </DataTemplate>

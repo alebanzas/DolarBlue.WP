@@ -15,9 +15,9 @@
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
-      <!--ExtendedTask Name="BackgroundTask">
-        <BackgroundServiceAgent Name="DolarBlueActualiza" Source="DolarBlueAgent" Specifier="ScheduledTaskAgent" Type="DolarBlueAgent" />
-      </ExtendedTask-->
+      <ExtendedTask Name="BackgroundTask">
+        <BackgroundServiceAgent Name="DolarBlueAgent" Source="DolarBlueAgent" Specifier="ScheduledTaskAgent" Type="DolarBlueAgent.ScheduledAgent" />
+      </ExtendedTask>
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="DolarBlueToken" TaskName="_default">
