@@ -110,11 +110,7 @@ namespace DolarBlue
             catch (Exception)
             {
                 EndRequest();
-                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    ConnectionError.Visibility = Visibility.Visible;
-                });
+                ShowErrorConnection();
             }
         }
 
@@ -134,11 +130,7 @@ namespace DolarBlue
             catch (Exception)
             {
                 EndRequest();
-                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    ConnectionErrorRofex.Visibility = Visibility.Visible;
-                });
+                ShowErrorConnection();
             }
         }
 
@@ -158,11 +150,7 @@ namespace DolarBlue
             catch (Exception)
             {
                 EndRequest();
-                //this.Dispatcher.BeginInvoke(() => MessageBox.Show("Error.. " + ex.Message));
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    ConnectionErrorTasas.Visibility = Visibility.Visible;
-                });
+                ShowErrorConnection();
             }
         }
 
@@ -267,7 +255,6 @@ namespace DolarBlue
                 Loading.Visibility = Visibility.Collapsed;
                 LoadingRofex.Visibility = Visibility.Collapsed;
                 LoadingTasas.Visibility = Visibility.Collapsed;
-                MessageBox.Show("Ha habido un error intentando acceder a los nuevos datos o no hay conexiones de red disponibles.\nPor favor asegúrese de contar con acceso de red y vuelva a intentarlo.");
             });
         }
 
