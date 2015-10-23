@@ -15,13 +15,13 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="/PanoramaBackground.png"/>
-        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="PanoramaBackground.png"/>
+        </Grid.Background>
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
@@ -36,32 +36,34 @@
                 <TextBox x:Name="ValorConvertir" InputScope="Digits" TextWrapping="Wrap" Text="1" Height="75" VerticalAlignment="Top"/>
 
                 <StackPanel Orientation="Horizontal">
-                    <toolkit:ListPicker HorizontalAlignment="Left" Height="72" Width="256" x:Name="Origen"></toolkit:ListPicker>
+                    <toolkit:ListPicker  HorizontalAlignment="Left" Height="72" Width="256" x:Name="Origen">
+                        <toolkit:ListPicker.FullModeItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                            </DataTemplate>
+                        </toolkit:ListPicker.FullModeItemTemplate>
+                    </toolkit:ListPicker>
                     <Button Width="180" Click="Convertir_OnClick">CONVERTIR</Button>
                 </StackPanel>
 
                 <TextBlock Margin="15,10,10,10">RESULTADO:</TextBlock>
-                <StackPanel Height="410">
-                    <ScrollViewer>
-                        <ListBox ItemsSource="{Binding Conversiones}" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Vertical" Margin="0,0,0,20" Width="432">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Simbolo}" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                            <TextBlock Text="{Binding ValorConvertir}" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                            <TextBlock Text="=" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ValorConvertidoStr}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                            <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </ScrollViewer>
-                </StackPanel>
+                <ListBox Height="410" ItemsSource="{Binding Conversiones}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,20" Width="432">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Simbolo}" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                    <TextBlock Text="{Binding ValorConvertir}" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                    <TextBlock Text="=" TextWrapping="Wrap" Margin="5,-6,5,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding ValorConvertidoStr}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <TextBlock Text="{Binding Nombre}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
         </Grid>
     </Grid>

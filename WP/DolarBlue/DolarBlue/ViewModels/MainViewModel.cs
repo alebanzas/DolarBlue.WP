@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 
 namespace DolarBlue.ViewModels
 {
@@ -134,13 +135,15 @@ namespace DolarBlue.ViewModels
         /// <summary>
         /// Calcula el nuevo valor convertido de cada divisa
         /// </summary>
-        public void SetValorConversion(double valorConversion, ConversionViewModel valorOrigen)
+        public void SetValorConversion(double valorAConvertir, ConversionViewModel valorOrigen)
         {
-            foreach (var conversion in Conversiones)
+            double valorMonedaSeleccionadaEnPesos = Conversiones.First(x => x.Nombre.Equals(valorOrigen.Nombre)).ValorVenta;
+
+            foreach (var monedaDestino in Conversiones)
             {
-                conversion.ValorConvertido = conversion.ValorVenta / valorConversion;
-                conversion.Simbolo = valorOrigen.Simbolo;
-                conversion.ValorConvertir = valorConversion;
+                monedaDestino.ValorConvertido = valorAConvertir * valorMonedaSeleccionadaEnPesos / monedaDestino.ValorVenta;
+                monedaDestino.Simbolo = valorOrigen.Simbolo;
+                monedaDestino.ValorConvertir = valorAConvertir;
             }
         }
 

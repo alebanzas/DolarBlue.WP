@@ -17,6 +17,8 @@ namespace DolarBlue
             DataContext = App.ViewModel;
             
             Origen.ItemsSource = App.ViewModel.TiposConversion;
+
+            Convertir_OnClick(null, null);
         }
 
         private void Convertir_OnClick(object sender, RoutedEventArgs e)
