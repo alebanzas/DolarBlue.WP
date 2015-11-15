@@ -20,14 +20,21 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
  
         <!--Panorama control-->
-        <controls:Panorama Title="dolar blue">
+        <controls:Panorama HeaderTemplate="{StaticResource SmallPanoramaTitle}">
             <controls:Panorama.Background>
                 <ImageBrush ImageSource="PanoramaBackground.png"/>
             </controls:Panorama.Background>
+            <controls:Panorama.TitleTemplate>
+                <DataTemplate>
+                    <TextBlock Text="dolar blue"
+                   FontSize="110"
+                   Margin="12,50,0,0" />
+                </DataTemplate>
+            </controls:Panorama.TitleTemplate>
 
             <controls:PanoramaItem Header="cotizaciones">
                 <Grid>
-                    <Grid Grid.Row="1" Margin="0,-10,0,10">
+                    <Grid Grid.Row="1" Margin="0,-40,0,10">
                         <TextBlock x:Name="Loading" Margin="15,0,-12,0" Opacity="0.7" Style="{StaticResource PhoneTextLargeStyle}">
                 		    <Run Text="Actualizando."/>
                         </TextBlock>

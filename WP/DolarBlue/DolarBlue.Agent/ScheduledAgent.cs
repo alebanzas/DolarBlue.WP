@@ -62,7 +62,7 @@ namespace DolarBlueAgent
                     }
 
                     var httpClient = new HttpClient();
-                    var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.1.0.0"));
+                    var httpReq = httpClient.Get("/api/cotizacion/divisas".ToApiCallUri());
                     httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
                 
                     //var newTileData = new StandardTileData

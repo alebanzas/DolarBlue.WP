@@ -112,15 +112,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="ColorExtensions.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Conversor.xaml.cs">
       <DependentUpon>Conversor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PositionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusChecker.cs" />
     <Compile Include="ViewModels\ConversionViewModel.cs" />
     <Compile Include="ViewModels\MessageModel.cs" />
     <Compile Include="ViewModels\DivisaModel.cs" />

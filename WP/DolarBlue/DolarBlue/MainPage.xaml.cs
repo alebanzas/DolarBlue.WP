@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
+using DolarBlue.Extensions;
 using DolarBlue.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Scheduler;
@@ -24,8 +25,8 @@ namespace DolarBlue
 
             InitializeComponent();
 
-            MobFoxAdControl.PublisherID = "336b241302471376ed5709debc76bac3";
-            MobFoxAdControl.TestMode = false;
+            MobFoxAdControl.PublisherID = App.Configuration.MobFoxID;
+            MobFoxAdControl.TestMode = App.Configuration.MobFoxInTestMode;
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
@@ -81,15 +82,15 @@ namespace DolarBlue
 
                 _requestCount = 2;
                 var httpClient = new HttpClient();
-                var httpReq = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/divisas/?type=WP&version=2.2.2.8"));
+                var httpReq = httpClient.Get("/api/cotizacion/divisas".ToApiCallUri());
                 httpReq.BeginGetResponse(HTTPWebRequestCallBack, httpReq);
 
                 LoadingRofex.Visibility = Visibility.Visible;
-                var httpReqRofex = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/rofex?type=WP&version=2.2.2.8"));
+                var httpReqRofex = httpClient.Get("/api/cotizacion/rofex".ToApiCallUri());
                 httpReqRofex.BeginGetResponse(HTTPWebRequestRofexCallBack, httpReqRofex);
 
                 LoadingTasas.Visibility = Visibility.Visible;
-                var httpReqTasas = httpClient.Get(new Uri("http://servicio.abhosting.com.ar/api/cotizacion/tasas?type=WP&version=2.2.2.8"));
+                var httpReqTasas = httpClient.Get("/api/cotizacion/tasas".ToApiCallUri());
                 httpReqTasas.BeginGetResponse(HTTPWebRequestTasasCallBack, httpReqTasas);
             }
             else
@@ -365,6 +366,7 @@ namespace DolarBlue
 
             if (tileToFind.Count == 1)
             {
+                StatusChecker.Check("DolarBlue.LiveTile");
                 ShellTile.Create(new Uri("/MainPage.xaml", UriKind.Relative), newTileData);
             }
             else
