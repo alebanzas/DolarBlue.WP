@@ -109,10 +109,10 @@ namespace DolarBlueAgent
                         BackgroundImage = new Uri("/Background.png", UriKind.Relative),
                     };
 
-                    var tileToFind =
-                        ShellTile.ActiveTiles.FirstOrDefault();
-
-                    tileToFind?.Update(newTileData);
+                    foreach (var tileToFind in ShellTile.ActiveTiles)
+                    {
+                        tileToFind?.Update(newTileData);
+                    }
                 });
             }
             catch (Exception)

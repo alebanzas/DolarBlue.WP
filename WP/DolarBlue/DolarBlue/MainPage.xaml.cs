@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -64,6 +65,9 @@ namespace DolarBlue
                     SystemTray.SetProgressIndicator(this, _progress);
 
                     var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                    if (applicationBarIconButton != null)
+                        applicationBarIconButton.IsEnabled = false;
+                    applicationBarIconButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
                     if (applicationBarIconButton != null)
                         applicationBarIconButton.IsEnabled = false;
 
@@ -267,6 +271,9 @@ namespace DolarBlue
                         var applicationBarIconButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
                         if (applicationBarIconButton != null)
                             applicationBarIconButton.IsEnabled = true;
+                        applicationBarIconButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+                        if (applicationBarIconButton != null)
+                            applicationBarIconButton.IsEnabled = true;
 
                         SystemTray.SetProgressIndicator(this, null);
                     }
@@ -307,17 +314,24 @@ namespace DolarBlue
 
         private void ButtonPin_Click(object sender, EventArgs e)
         {
+            GenerateTile(true);
+
+            GenerateLiveTile();
+        }
+
+        private static void GenerateLiveTile()
+        {
             var name = "DolarBlueAgent";
 
             var tileToFind = ShellTile.ActiveTiles.FirstOrDefault(x => x.NavigationUri.ToString().Contains("TileID=1"));
 
             if (tileToFind != null) return;
-            
+
             var periodicTask = new PeriodicTask(name)
             {
                 Description = "Actualiza cotizacion del dolar en Tile",
             };
-                
+
             if (ScheduledActionService.Find(name) != null)
             {
                 ScheduledActionService.Remove(name);
@@ -327,21 +341,19 @@ namespace DolarBlue
 #if DEBUG
             ScheduledActionService.LaunchForTest(name, TimeSpan.FromSeconds(10));
 #endif
-
-            GenerateTile(true);
         }
 
-        private static bool GenerateTile(bool force = false)
+        private static void GenerateTile(bool force = false)
         {
-            if (!App.ViewModel.IsDataLoadedDivisa) return true;
+            if (!App.ViewModel.IsDataLoadedDivisa) return;
 
             var item = App.ViewModel.Items.FirstOrDefault(x => x.Nombre.Contains("Blue"));
 
-            if (item == null) return true;
+            if (item == null) return;
 
-            ShellTile tileToFind = ShellTile.ActiveTiles.FirstOrDefault();
+            List<ShellTile> tileToFind = ShellTile.ActiveTiles.ToList();
 
-            if (!force && tileToFind == null) return true;
+            if (!force) return;
 
             var newTileData = new StandardTileData
             {
@@ -351,19 +363,22 @@ namespace DolarBlue
                 BackgroundImage = new Uri("/Background.png", UriKind.Relative),
             };
 
-
-            
-            if (tileToFind == null)
+            if (tileToFind.Count == 1)
             {
-                ShellTile.Create(new Uri("/", UriKind.Relative), newTileData);
+                ShellTile.Create(new Uri("/MainPage.xaml", UriKind.Relative), newTileData);
             }
             else
             {
-                tileToFind.Update(newTileData);
+                MessageBox.Show("Actualizado.");
             }
 
+            foreach (var shellTile in tileToFind)
+            {
+                shellTile.Update(newTileData);
+            }
 
-            return false;
+            
+            return;
         }
 
         private void Opciones_Click(object sender, EventArgs e)
